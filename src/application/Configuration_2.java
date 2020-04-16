@@ -1,32 +1,36 @@
 package application;
-	
+
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-
-public class Main extends Application {
+public class Configuration_2 extends Application{
 	
+	ObservableList<Information> data=FXCollections.observableArrayList();
 	
+	ArrayList<Traffic> traffic_collection = new ArrayList<Traffic>();
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -49,18 +53,15 @@ public class Main extends Application {
 			ToggleButton tb3 = new ToggleButton("Cyclist");
 			tb3.setToggleGroup(group);
 			
-			ArrayList<Control> togbutton_controls = new ArrayList<Control>();
-			togbutton_controls.add(tb1);
-			togbutton_controls.add(tb2);
-			togbutton_controls.add(tb3);
-			HBox hbox = addHBox(togbutton_controls);
+			HBox hbox = new HBox(tb1, tb2, tb3);
+			hbox.setPadding(new Insets(0,0,0,25));
 			
 			// The text input sections
 			GridPane grid = new GridPane();
 			grid.setAlignment(Pos.CENTER);
 			grid.setHgap(10);
 			grid.setVgap(10);
-			grid.setPadding(new Insets(25, 25, 25, 25));
+			grid.setPadding(new Insets(25, 25, 50, 25));
 			
 			Label CarType = new Label("Car type:");
 			grid.add(CarType, 0, 0);
@@ -76,26 +77,28 @@ public class Main extends Application {
 			grid.add(Gender, 0, 2);
 			
 			final ToggleGroup group2 = new ToggleGroup();
-			ArrayList<Control> gender_rb = new ArrayList<Control>();
 			RadioButton rb1 = new RadioButton("Male");
 			rb1.setPadding(new Insets(0,10,0,0));
 			rb1.setToggleGroup(group2);
 			rb1.setSelected(true);
-			gender_rb.add(rb1);
+;
 			RadioButton rb2 = new RadioButton("Female");
 			rb2.setPadding(new Insets(0,10,0,0));
 			rb2.setToggleGroup(group2);
-			gender_rb.add(rb2);
-			HBox gender_button = addHBox(gender_rb);
+
+			HBox gender_button = new HBox(rb1, rb2);
 			grid.add(gender_button, 1, 2);
 			
 			//save and input buttons 
-			Button save_button = new Button("save");
-			Button add_button = new Button("Button");
+			Button save_button = new Button("Save");
+			Button add_button = new Button("Add");
+			Button simulate_button = new Button("Start simulate");
+			VBox save_add = new VBox(save_button, add_button, simulate_button);
+			save_add.setSpacing(5);
+			save_add.setPadding(new Insets(25,25,25,25));
 			
-			
-			VBox addBox = vLayoutBox(hbox);
-			addBox.getChildren().addAll(grid, save_button, add_button);
+			VBox addBox = new VBox(hbox, grid, save_add);
+			addBox.setPadding(new Insets(15,15,15,15));
 		
 			
 			//***************************************
@@ -111,18 +114,56 @@ public class Main extends Application {
 	        TableColumn GenderCol = new TableColumn("Gender");
 	        TableColumn AgeCol = new TableColumn("Age");
 	        
+	        TrafficCol.setCellValueFactory(
+	        		new PropertyValueFactory<>("cartype"));
+	        GenderCol.setCellValueFactory(
+	        		new PropertyValueFactory<>("gender"));
+	        AgeCol.setCellValueFactory(
+	        		new PropertyValueFactory<>("age"));
+	        table.setItems(data);
+	        
+	        add_button.setOnAction((ActionEvent e)->{
+	        	String Gend=null;
+	        	Boolean is_Male = null;
+	        	String Vehicle = null;
+	        	Traffic traffic = null;
+	        	
+	        	if(rb1.isSelected()) {
+	        		Gend="Male";
+	        		is_Male = true;
+	        	}
+	        	else {
+	        		Gend="Female";
+	        		is_Male = false;
+	        	}
+	        	
+	        	if (tb1.isSelected()) {
+	        		Vehicle = "Car"+"("+CarTextField.getText()+")";
+	        		traffic = new Car(CarTextField.getText(), is_Male, Integer.parseInt(AgeTextField.getText()));
+	        	}else if(tb2.isSelected()) {
+	        		Vehicle = "Walker";
+	        		traffic = new Walker(is_Male, Integer.parseInt(AgeTextField.getText()));
+	        	}else {
+	        		Vehicle="Cyclist";
+	        		traffic = new Cyclist(is_Male, Integer.parseInt(AgeTextField.getText()));
+	        	}
+	        	
+	        	data.add(new Information(
+	        			Vehicle,
+	        			AgeTextField.getText(),
+	        			Gend));
+	        	traffic_collection.add(traffic);
+	        	System.out.print(traffic_collection);
+	        });
+	        
 	        table.getColumns().addAll(TrafficCol, GenderCol, AgeCol);
 	        
-	        
-	        ArrayList<Control> view_controls = new ArrayList<Control>();
-	        view_controls.add(table);
-	        
-			VBox viewBox = addVBox(view_controls);
+			VBox viewBox = new VBox(table);
+			viewBox.setPadding(new Insets(15,15,15,15));
 			//***************************************
 			
 			root.setLeft(addBox);
 			root.setRight(viewBox);
-			
 			
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
@@ -132,40 +173,10 @@ public class Main extends Application {
 		}
 	}
 	
-	public VBox addVBox(ArrayList<Control> togbutton_controls) {
-		VBox vbox = new VBox();
-		vbox.setPadding(new Insets(10));
-		
-		
-		for (int i = 0; i < togbutton_controls.size(); i++) {
-			vbox.getChildren().add(togbutton_controls.get(i));
-		}
-		
-		return vbox;
-		
-	}
-	
-	public VBox vLayoutBox(Pane pane) {
-		VBox vbox = new VBox();
-		vbox.setPadding(new Insets(10));
-        
-        vbox.getChildren().add(pane);
-		return vbox;
-		
-	}
-	
-	public HBox addHBox(ArrayList<Control> togbutton_controls) {
-		HBox hbox = new HBox();
-		
-		for (int i = 0; i < togbutton_controls.size(); i++) {
-			hbox.getChildren().add(togbutton_controls.get(i));
-		}
-		return hbox;
-		
-	}
+
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 }
-
