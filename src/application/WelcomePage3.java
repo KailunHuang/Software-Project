@@ -1,4 +1,4 @@
-package roadSimulation;
+package application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -24,7 +24,7 @@ public class WelcomePage3 extends Application {
 		load.setPrefWidth(300);
 		load.setPrefHeight(50);
 		newSimulation.setOnAction(e->{
-			Configure open=new Configure();
+			Configuration_2 open=new Configuration_2();
 			try
 			{
 				open.start(new Stage());
@@ -35,7 +35,7 @@ public class WelcomePage3 extends Application {
 			}
 		});
 		load.setOnAction(e->{
-			Configure open=new Configure();
+			Configuration_2 open=new Configuration_2();
 			try
 			{
 				open.start(new Stage());

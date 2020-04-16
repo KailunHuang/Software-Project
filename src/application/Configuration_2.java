@@ -3,6 +3,9 @@ package application;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -24,6 +28,9 @@ import javafx.stage.Stage;
 
 public class Configuration_2 extends Application{
 	
+	ObservableList<Information> data=FXCollections.observableArrayList();
+	
+	ArrayList<Traffic> traffic_collection = new ArrayList<Traffic>();
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -85,8 +92,9 @@ public class Configuration_2 extends Application{
 			//save and input buttons 
 			Button save_button = new Button("Save");
 			Button add_button = new Button("Add");
-			
-			VBox save_add = new VBox(save_button, add_button);
+			Button simulate_button = new Button("Start simulate");
+			VBox save_add = new VBox(save_button, add_button, simulate_button);
+			save_add.setSpacing(5);
 			save_add.setPadding(new Insets(25,25,25,25));
 			
 			VBox addBox = new VBox(hbox, grid, save_add);
@@ -105,6 +113,48 @@ public class Configuration_2 extends Application{
 	        TrafficCol.setMinWidth(200);
 	        TableColumn GenderCol = new TableColumn("Gender");
 	        TableColumn AgeCol = new TableColumn("Age");
+	        
+	        TrafficCol.setCellValueFactory(
+	        		new PropertyValueFactory<>("cartype"));
+	        GenderCol.setCellValueFactory(
+	        		new PropertyValueFactory<>("gender"));
+	        AgeCol.setCellValueFactory(
+	        		new PropertyValueFactory<>("age"));
+	        table.setItems(data);
+	        
+	        add_button.setOnAction((ActionEvent e)->{
+	        	String Gend=null;
+	        	Boolean is_Male = null;
+	        	String Vehicle = null;
+	        	Traffic traffic = null;
+	        	
+	        	if(rb1.isSelected()) {
+	        		Gend="Male";
+	        		is_Male = true;
+	        	}
+	        	else {
+	        		Gend="Female";
+	        		is_Male = false;
+	        	}
+	        	
+	        	if (tb1.isSelected()) {
+	        		Vehicle = "Car"+"("+CarTextField.getText()+")";
+	        		traffic = new Car(CarTextField.getText(), is_Male, Integer.parseInt(AgeTextField.getText()));
+	        	}else if(tb2.isSelected()) {
+	        		Vehicle = "Walker";
+	        		traffic = new Walker(is_Male, Integer.parseInt(AgeTextField.getText()));
+	        	}else {
+	        		Vehicle="Cyclist";
+	        		traffic = new Cyclist(is_Male, Integer.parseInt(AgeTextField.getText()));
+	        	}
+	        	
+	        	data.add(new Information(
+	        			Vehicle,
+	        			AgeTextField.getText(),
+	        			Gend));
+	        	traffic_collection.add(traffic);
+	        	System.out.print(traffic_collection);
+	        });
 	        
 	        table.getColumns().addAll(TrafficCol, GenderCol, AgeCol);
 	        
