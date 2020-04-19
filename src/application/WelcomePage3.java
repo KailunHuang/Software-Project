@@ -85,7 +85,7 @@ public class WelcomePage3 extends Application {
 	        String[] data = myReader.nextLine().split(",");
 //	        if one line has more than three variables then it's a car object 
 	        if (data.length > 3) {
-	        	if(data[2]=="Male") {
+	        	if(data[2].equals("Male")) {
 	        		is_Male = true;
 	        	}else {
 	        		is_Male = false;
@@ -93,15 +93,15 @@ public class WelcomePage3 extends Application {
 	        	collections_.add(new Car(data[1],is_Male,Integer.parseInt(data[3])));
 //	        otherwise it's a walker or cyclist object	
 	        }else {
-	        	if(data[1]=="Male") {
+	        	if(data[1].equals("Male")){
 	        		is_Male = true;
 	        	}else {
 	        		is_Male = false;
 	        	}
-	        	
-	        	if(data[0]=="Walker") {
+	        	if(data[0].equals("Walker")) {
 	        		collections_.add(new Walker(is_Male, Integer.parseInt(data[2])));
 	        	}else {
+	        		System.out.println(data[0]);
 	        		collections_.add(new Cyclist(is_Male, Integer.parseInt(data[2])));
 	        	}
 	        }

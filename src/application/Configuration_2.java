@@ -1,8 +1,15 @@
 package application;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +22,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -29,7 +37,9 @@ import javafx.stage.Stage;
 public class Configuration_2 extends Application{
 	
 	ObservableList<Information> data=FXCollections.observableArrayList();
-	
+	ArrayList<String> saveVehicle=new ArrayList<String>();
+	ArrayList<String> saveAge=new ArrayList<String>();
+	ArrayList<String> saveGender=new ArrayList<String>();
 	ArrayList<Traffic> traffic_collection = new ArrayList<Traffic>();
 	
 	public Configuration_2() {
@@ -48,15 +58,22 @@ public class Configuration_2 extends Application{
 				gender = "Female";
 			}
 			
-			if (object.V_type=="car") {				
-				data.add(new Information("Car"+"("+((Car) object).Type+")", Integer.toString(object.Driver_Age), gender));
+			if (object.V_type=="Car") {				
+				data.add(new Information("Car"+","+((Car) object).Type, Integer.toString(object.Driver_Age), gender));
 			}else {
 				data.add(new Information(object.V_type, Integer.toString(object.Driver_Age),gender));
 			}
 		}
 	}
 	
-	@Override
+
+	public static String value(int k, TableView t, int m) {
+		TableColumn Column = (TableColumn) t.getColumns().get(k);
+ 	   ObservableValue observeValue = Column.getCellObservableValue(m);
+ 	   String a=observeValue.getValue().toString();
+ 	   return a;
+	}
+	
 	public void start(Stage primaryStage) {
 		try {
 
@@ -163,7 +180,7 @@ public class Configuration_2 extends Application{
 	        	}
 	        	
 	        	if (tb1.isSelected()) {
-	        		Vehicle = "Car"+"("+CarTextField.getText()+")";
+	        		Vehicle = "Car"+","+CarTextField.getText();
 	        		traffic = new Car(CarTextField.getText(), is_Male, Integer.parseInt(AgeTextField.getText()));
 	        	}else if(tb2.isSelected()) {
 	        		Vehicle = "Walker";
@@ -178,8 +195,36 @@ public class Configuration_2 extends Application{
 	        			AgeTextField.getText(),
 	        			Gend));
 	        	traffic_collection.add(traffic);
-	        	System.out.print(traffic_collection);
+	     //   	System.out.print(traffic_collection);
 	        });
+	       // ObservableValue observableValue = tableColumn.getCellObservableValue(0);
+	  
+	        save_button.setOnAction((ActionEvent e)->{
+	        	int i=table.getItems().size();
+	        	for(int row=0;row<i;row++) {
+	        	 saveVehicle.add(value(0,table,row));
+	        	 saveAge.add(value(1,table,row));
+	        	 saveGender.add(value(2,table,row));
+	        	}
+	        	File file=new File("./number.txt");
+	        	FileWriter rr;
+				try {
+					rr = new FileWriter("./number.txt");
+					BufferedWriter bb= new BufferedWriter(rr);
+		    		for(int size=0;size<i;size++) {
+		    		bb.write(saveVehicle.get(size)+",");
+		    		bb.write(saveAge.get(size)+",");
+		    		bb.write(saveGender.get(size)+"\n");
+		    		}
+		    		bb.close();
+		    		rr.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	        });
+	        
+	        
 	        
 	        table.getColumns().addAll(TrafficCol, GenderCol, AgeCol);
 	        
