@@ -154,7 +154,7 @@ public class Configuration_2 extends Application{
 	        	}
 	        	
 	        	if (tb1.isSelected()) {
-	        		Vehicle = "Car"+"("+CarTextField.getText()+")";
+	        		Vehicle = "Car"+","+CarTextField.getText();
 	        		traffic = new Car(CarTextField.getText(), is_Male, Integer.parseInt(AgeTextField.getText()));
 	        	}else if(tb2.isSelected()) {
 	        		Vehicle = "Walker";
