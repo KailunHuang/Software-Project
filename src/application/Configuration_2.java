@@ -31,6 +31,31 @@ public class Configuration_2 extends Application{
 	ObservableList<Information> data=FXCollections.observableArrayList();
 	
 	ArrayList<Traffic> traffic_collection = new ArrayList<Traffic>();
+	
+	public Configuration_2() {
+		
+	}
+	
+	public Configuration_2(ArrayList<Traffic> traffic) {
+		this.traffic_collection = traffic;
+		String gender = null;
+		for (int i = 0; i < this.traffic_collection.size(); i++) {
+			Traffic object = traffic_collection.get(i);
+			
+			if(object.is_Male) {
+				gender = "Male";
+			}else {
+				gender = "Female";
+			}
+			
+			if (object.V_type=="car") {				
+				data.add(new Information("Car"+"("+((Car) object).Type+")", Integer.toString(object.Driver_Age), gender));
+			}else {
+				data.add(new Information(object.V_type, Integer.toString(object.Driver_Age),gender));
+			}
+		}
+	}
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
