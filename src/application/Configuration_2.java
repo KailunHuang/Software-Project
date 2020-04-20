@@ -13,11 +13,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -89,6 +91,7 @@ public class Configuration_2 extends Application{
 			tb1.setToggleGroup(group);
 			tb1.setSelected(true);
 			
+			
 			ToggleButton tb2 = new ToggleButton("Foot passger");
 			tb2.setToggleGroup(group);
 			
@@ -105,10 +108,38 @@ public class Configuration_2 extends Application{
 			grid.setVgap(10);
 			grid.setPadding(new Insets(25, 25, 50, 25));
 			
-			Label CarType = new Label("Car type:");
-			grid.add(CarType, 0, 0);
-			TextField CarTextField = new TextField();
-			grid.add(CarTextField, 1, 0);
+			Label Car_Type = new Label("Car type:");
+			grid.add(Car_Type, 0, 0);
+			ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("Car", "Track", "Bus"));
+			cb.setVisible(true);
+			grid.add(cb, 1, 0);
+			
+//			The car type only shows up when the car toggle button is selected
+			tb1.setOnAction((new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					cb.setVisible(true);
+					Car_Type.setVisible(true);
+				}
+			}));
+			tb2.setOnAction((new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					cb.setVisible(false);
+					Car_Type.setVisible(false);
+				}
+			}));
+			tb3.setOnAction((new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					cb.setVisible(false);
+					Car_Type.setVisible(false);
+				}
+			}));
+			
 			
 			Label Age = new Label("Age:");
 			grid.add(Age, 0, 1);
@@ -180,8 +211,8 @@ public class Configuration_2 extends Application{
 	        	}
 	        	
 	        	if (tb1.isSelected()) {
-	        		Vehicle = "Car"+","+CarTextField.getText();
-	        		traffic = new Car(CarTextField.getText(), is_Male, Integer.parseInt(AgeTextField.getText()));
+	        		Vehicle = "Car"+","+cb.getValue();
+	        		traffic = new Car((String)cb.getValue(), is_Male, Integer.parseInt(AgeTextField.getText()));
 	        	}else if(tb2.isSelected()) {
 	        		Vehicle = "Walker";
 	        		traffic = new Walker(is_Male, Integer.parseInt(AgeTextField.getText()));
