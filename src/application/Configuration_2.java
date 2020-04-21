@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JFileChooser;
+
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -237,10 +239,15 @@ public class Configuration_2 extends Application{
 	        	 saveAge.add(value(1,table,row));
 	        	 saveGender.add(value(2,table,row));
 	        	}
-	        	File file=new File("./number.txt");
+	        	JFileChooser ch=new JFileChooser();
+	        	int res=ch.showSaveDialog(null);
+	        	if(res==JFileChooser.APPROVE_OPTION) {
+	        		File file=ch.getSelectedFile();
+	        		file=new File(file.getPath()+".txt");
+	        	
 	        	FileWriter rr;
 				try {
-					rr = new FileWriter("./number.txt");
+					rr = new FileWriter(file);
 					BufferedWriter bb= new BufferedWriter(rr);
 		    		for(int size=0;size<i;size++) {
 		    		bb.write(saveVehicle.get(size)+",");
@@ -253,6 +260,7 @@ public class Configuration_2 extends Application{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+	        	}
 	        });
 	        
 	        
