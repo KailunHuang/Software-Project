@@ -1,0 +1,4 @@
+Car,Van,Male,20
+Walker,Male,20
+Cyclist,Male,20
+Car,Bus,Male,45
