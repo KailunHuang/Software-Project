@@ -1,4 +1,4 @@
-package roadSimulation;
+package application;
 
 import javafx.beans.property.SimpleStringProperty;
 

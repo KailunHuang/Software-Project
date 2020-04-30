@@ -3,6 +3,7 @@ package application;
 import java.util.Random;
 
 public class Car extends Traffic {
+<<<<<<< HEAD
 	//private String Type;
 	
 	public Car(String type, Boolean gender, int age) {
@@ -21,6 +22,15 @@ public class Car extends Traffic {
 			this.payoff_crash -= 10;
 			this.payoff_pass += 10;
 		}
+=======
+	public String Type;
+
+	
+	public Car(String type, Boolean gender, int age) {
+		super(gender, age);
+		super.V_type="Car";
+		this.Type = type;
+>>>>>>> 815d809a4a3738d0aa5959e36160081af94d5095
 	}
 
 }

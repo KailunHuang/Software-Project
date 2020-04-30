@@ -3,6 +3,7 @@ package application;
 import java.util.Random;
 
 public abstract class Traffic {
+<<<<<<< HEAD
     public static final int MOVE = 1;
     public static final int STOP = 0;
     //gender
@@ -17,4 +18,17 @@ public abstract class Traffic {
     //payoff of crashing
     protected int payoff_crash;
 
+=======
+	public boolean is_Male;
+	public int Driver_Age;
+	public String V_type;
+	
+	public Traffic(Boolean gender, int age) {
+		this.is_Male = gender;
+		this.Driver_Age = age;
+
+	}
+	
+	
+>>>>>>> 815d809a4a3738d0aa5959e36160081af94d5095
 }
