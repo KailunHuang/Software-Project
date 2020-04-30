@@ -3,11 +3,11 @@ package application;
 import java.util.Random;
 
 public class Car extends Traffic {
-	//private String Type;
+	private String Type;
 	
-	public Car(Boolean gender, int age) {
+	public Car(String type,Boolean gender, int age) {
 		super(gender,age);
-		//this.Type = type;
+		this.Type = type;
 		this.carelessRate = 0.7 - 0.1*age*70;
 		if(this.carelessRate<0){
 			carelessRate = 0;
@@ -22,4 +22,7 @@ public class Car extends Traffic {
 		}
 	}
 
+	public String getType() {
+		return Type;
+	}
 }

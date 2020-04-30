@@ -17,6 +17,7 @@ public abstract class Traffic {
     //payoff of crashing
     protected int payoff_crash;
 
+    protected String V_type;
 	public Traffic(Boolean gender, int age) {
 		this.is_Male = gender;
 		this.age = age;
