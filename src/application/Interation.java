@@ -14,7 +14,7 @@ public class Interation {
         pass_probs[0] = 0;
         pass_probs[1] = 0;
         if(Math.random()<a.carelessRate){
-            pass_probs[0] = 0;
+            pass_probs[0] = 1.0;
         }
         else {
             pass_probs[0] = (double) (b.payoff_stop - b.payoff_pass) / (double) (b.payoff_crash - b.payoff_pass);
