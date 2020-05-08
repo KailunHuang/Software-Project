@@ -63,9 +63,9 @@ public class Configuration_2 extends Application{
 			}
 			
 			if (object.V_type=="Car") {				
-				data.add(new Information("Car"+","+((Car) object).Type, Integer.toString(object.Driver_Age), gender));
+				data.add(new Information("Car"+","+((Car) object).getType(), Integer.toString(object.age), gender));
 			}else {
-				data.add(new Information(object.V_type, Integer.toString(object.Driver_Age),gender));
+				data.add(new Information(object.V_type, Integer.toString(object.age),gender));
 			}
 		}
 	}
