@@ -7,9 +7,12 @@ import java.util.ArrayList;
  * @date {2020/5/5}
  */
 public class Testoutput {
-   public static void main(String args[]){
-       ArrayList<Record> snapshot = null;
-       ArrayList<ArrayList<Record>> fullrecords = new ArrayList<>();
+	
+	public ArrayList<Record> snapshot = null;
+    public ArrayList<ArrayList<Record>> fullrecords = new ArrayList<>();
+	
+   public Testoutput(){
+      
        snapshot = new ArrayList<>();
        snapshot.add(new Record("car","1","appear",1,1));
        snapshot.add(new Record("car","2","appear",2,2));
