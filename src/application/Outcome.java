@@ -27,8 +27,8 @@ public class Outcome extends Application{
 		for (int i = 0; i < intersections.size(); i++) {
 			Intersection item = intersections.get(i);
 			GridPane cell = new GridPane();
-			Text t1 = new Text("Traffic1");
-			Text t2 = new Text("Traffic2");
+			Text t1 = new Text("Traffic1: ");
+			Text t2 = new Text("Traffic2: ");
 			Text traffic1 = new Text(item.getTraffic1().V_type);
 			Text traffic2 = new Text(item.getTraffic2().V_type);
 			Text action = new Text("Action");

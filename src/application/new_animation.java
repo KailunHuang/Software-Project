@@ -3,7 +3,6 @@ package application;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -58,10 +57,13 @@ public class new_animation extends Application{
 	    root.getChildren().add(cyclist);
 	    root.getChildren().add(circle);
 	    Scene scene = new Scene(root, columns*60, rows*60, Color.WHITE);
-
+	    
 //	    transportImage(root, cyclist, 0, 180, 120, 180);
 	    transportShape(circle, 30, 210, 150, 210);
 	    transportShape(circle, 150, 210, 330, 210);
+	    
+	    
+	    
 	    primaryStage.setScene(scene);
         primaryStage.show();
 	}
@@ -116,25 +118,28 @@ public class new_animation extends Application{
 	public void transportShape(Circle circle, double current_x ,
 			double current_y, double aim_x, double aim_y) {
 		
-		double duration = ((Math.abs(aim_x-current_x) + Math.abs(aim_y - current_y))/60)*2;
+		double duration = ((Math.abs(aim_x-current_x) + Math.abs(aim_y - current_y))/60);
 		System.out.println("the duration: "+duration);
 		Duration TRANSLATE_DURATION = Duration.seconds(duration);
 		TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, circle);
+		
 //	    transition.setOnFinished(new EventHandler<ActionEvent>() {
 //	      @Override public void handle(ActionEvent t) {
 //	        circle.setCenterX(circle.getTranslateX() + circle.getCenterX());
 //	        circle.setCenterY(circle.getTranslateY() + circle.getCenterY());
+//	        circle.setCenterX(aim_x);
+//	        circle.setCenterY(aim_y);
 //	        System.out.println(circle.getTranslateX());
 //	        System.out.println(circle.getTranslateY());
 //	        System.out.println(circle.getCenterX());
 //	        System.out.println(circle.getCenterY());
-//	        
 //	        System.out.print("\n");
 //	        circle.setTranslateX(0);
 //	        circle.setTranslateY(0);
 //	        
 //	      }
 //	    });
+		
 	    transition.setToX(aim_x - circle.getCenterX());
         transition.setToY(aim_y - circle.getCenterY());
         transition.playFromStart();
