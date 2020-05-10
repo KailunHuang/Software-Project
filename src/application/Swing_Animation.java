@@ -39,10 +39,12 @@ public class Swing_Animation {
 	 */
 	private void initialize() throws IOException {
 		Background_Pane bp = new Background_Pane();
+		MoveImage mi = new MoveImage();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 680, 530);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(bp);
+//		frame.add(mi);
 	}
 
 }
