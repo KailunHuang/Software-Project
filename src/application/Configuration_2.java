@@ -169,6 +169,22 @@ public class Configuration_2 extends Application{
 			Button add_button = new Button("Add");
 			Button simulate_button = new Button("Start simulate");
 			VBox save_add = new VBox(save_button, add_button, simulate_button);
+			
+			simulate_button.setOnAction((new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					try {
+						Swing_Animation simulate = new Swing_Animation();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}));
+			
 			save_add.setSpacing(5);
 			save_add.setPadding(new Insets(25,25,25,25));
 			
