@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class new_animation extends Application{
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
@@ -47,26 +47,30 @@ public class new_animation extends Application{
 	    
 	    loadRoadImage(gameGrid);
 	    
-	    ImageView cyclist = new ImageView(new Image("application/img/bike.png"));
-	    cyclist.setFitHeight(60);
-	    cyclist.setFitWidth(60);
-	    cyclist.setLayoutX(0);
-	    cyclist.setLayoutY(180);
+//	    ImageView cyclist = new ImageView(new Image("application/img/bike.png"));
+//	    cyclist.setFitHeight(60);
+//	    cyclist.setFitWidth(60);
+//	    cyclist.setLayoutX(0);
+//	    cyclist.setLayoutY(180);
+//	    root.getChildren().add(cyclist);
+	    
 	    Circle circle = new Circle(30, 210, 30);
+	    Circle circle2 = new Circle(210, 30, 30);
 	    root.getChildren().add(gameGrid);
-	    root.getChildren().add(cyclist);
 	    root.getChildren().add(circle);
+	    root.getChildren().add(circle2);
 	    Scene scene = new Scene(root, columns*60, rows*60, Color.WHITE);
 	    
 //	    transportImage(root, cyclist, 0, 180, 120, 180);
 	    transportShape(circle, 30, 210, 150, 210);
 	    transportShape(circle, 150, 210, 330, 210);
-	    
+	    transportShape(circle2, 210, 30, 210, 150);
 	    
 	    
 	    primaryStage.setScene(scene);
         primaryStage.show();
 	}
+	
 	
 	public static void loadRoadImage(GridPane gridpane) {
 		int columns = 8;
@@ -158,4 +162,6 @@ public class new_animation extends Application{
 	public static void main(String[] args) {
         Application.launch(args);
     }
+	
+	
 }
