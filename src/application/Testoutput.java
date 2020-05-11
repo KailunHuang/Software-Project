@@ -18,7 +18,6 @@ public class Testoutput {
        snapshot.add(new Record("car","2","appear",2,2));
        fullrecords.add(snapshot);
        snapshot = new ArrayList<>();
-       snapshot.add(new Record("car","1","move",1,2));
        snapshot.add(new Record("car","2","move",1,2));
        snapshot.add(new Record("car","1","meet","car","2"));
        snapshot.add(new Record("car","1","stop"));

@@ -1,9 +1,11 @@
 package application;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 
 public class Swing_Animation {
 
@@ -38,13 +40,14 @@ public class Swing_Animation {
 	 * @throws IOException 
 	 */
 	private void initialize() throws IOException {
+		JLayeredPane lpane = new JLayeredPane();
 		Background_Pane bp = new Background_Pane();
 		MoveImage mi = new MoveImage();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 680, 530);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mi.setOpaque(false);
 		frame.add(bp);
-//		frame.add(mi);
 	}
 
 }
