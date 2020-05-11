@@ -1,14 +1,14 @@
 package application;
 
-import com.sun.javafx.geom.Shape;
+import javafx.scene.shape.Shape;
 
-public class IconLocation {
+public class Icon{
 	
 	private Shape shape;
 	private String name;
 
 	
-	public IconLocation(Shape shape, String name) {
+	public Icon(Shape shape, String name) {
 		this.name = name;
 		this.shape = shape;
 	}

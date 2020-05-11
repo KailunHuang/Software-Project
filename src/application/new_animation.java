@@ -2,6 +2,7 @@ package application;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -22,16 +23,19 @@ import javafx.util.Duration;
 
 public class new_animation extends Application{
 	
+	private HashMap<String, Coordinate> current_records = new HashMap<String, Coordinate>();
+	private HashMap<String, Coordinate> future_records = new HashMap<String, Coordinate>();
+	private ArrayList<ArrayList<Record>> records = getRecords();
+	private int round = 1;
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		Group root = new Group();
-		
 		int rows = 8;
 		int columns = 11;
-		
 		GridPane gameGrid = new GridPane();
-
+//		Draw Background Roads
 	    for (int i = 0; i < columns; i++) {
 	        ColumnConstraints columnn = new ColumnConstraints(60);
 	        gameGrid.getColumnConstraints().add(columnn);
@@ -46,6 +50,7 @@ public class new_animation extends Application{
 	    gameGrid.setStyle("-fx-background-color: white; -fx-grid-lines-visible:true");
 	    
 	    loadRoadImage(gameGrid);
+	    root.getChildren().add(gameGrid);
 	    
 //	    ImageView cyclist = new ImageView(new Image("application/img/bike.png"));
 //	    cyclist.setFitHeight(60);
@@ -53,20 +58,19 @@ public class new_animation extends Application{
 //	    cyclist.setLayoutX(0);
 //	    cyclist.setLayoutY(180);
 //	    root.getChildren().add(cyclist);
+	    loadInitialTraffics(root);
 	    
-	    Circle circle = new Circle(30, 210, 30);
-	    Circle circle2 = new Circle(210, 30, 30);
-	    root.getChildren().add(gameGrid);
-	    root.getChildren().add(circle);
-	    root.getChildren().add(circle2);
-	    Scene scene = new Scene(root, columns*60, rows*60, Color.WHITE);
+	   
+
+	    
 	    
 //	    transportImage(root, cyclist, 0, 180, 120, 180);
-	    transportShape(circle, 30, 210, 150, 210);
-	    transportShape(circle, 150, 210, 330, 210);
-	    transportShape(circle2, 210, 30, 210, 150);
+//	    transportShape(circle, 30, 210, 150, 210);
+//	    transportShape(circle, 150, 210, 330, 210);
+//	    transportShape(circle2, 210, 30, 210, 150);
 	    
 	    
+	    Scene scene = new Scene(root, columns*60, rows*60, Color.WHITE);
 	    primaryStage.setScene(scene);
         primaryStage.show();
 	}
@@ -119,8 +123,50 @@ public class new_animation extends Application{
 		}
 	}
 	
-	public void transportShape(Circle circle, double current_x ,
-			double current_y, double aim_x, double aim_y) {
+	public void loadInitialTraffics(Group root) {
+		ArrayList<Record> round0 = records.get(0);
+		ArrayList<Record> round1 = records.get(1);
+		
+		for (int i = 0; i < round0.size(); i++) {
+			Record record = round0.get(i);
+			if (record.action.equals("appear")) {
+				Coordinate coordinate = extractCoordinate(record);
+				current_records.put(record.selfname, coordinate);
+			}
+		}
+		
+		for (int i = 0; i < round1.size(); i++) {
+			Record record = round1.get(i);
+			if (record.action.equals("appear") || record.action.equals("move")) {
+				Coordinate coordinate = extractCoordinate(record);
+				future_records.put(record.selfname, coordinate);
+			}else if(record.action.equals("stop")){
+				future_records.put(record.selfname, current_records.get(record.selfname));
+			}
+		}
+		for (String i : current_records.keySet()) {
+			root.getChildren().add(current_records.get(i).getCircle());
+			System.out.println(i+" "+current_records.get(i).getX()+" "+current_records.get(i).getX());
+			System.out.println(i+" "+future_records.get(i).getX()+ " "+future_records.get(i).getY());
+			int currentx = current_records.get(i).getX();
+			int currenty = current_records.get(i).getY();
+			int futurex = future_records.get(i).getX();
+			int futurey = future_records.get(i).getY();
+			if (currentx != futurex || currenty != futurey) {
+				transportShape(current_records.get(i).getCircle(), currentx, currenty, futurex, futurey);
+			}
+//			transportShape((Circle) i.getShape(), );
+		}
+		
+	}
+	
+	public Coordinate extractCoordinate(Record record) {
+		Coordinate coordinate = new Coordinate(30+record.posx*60, 30+record.posy*60);
+		return coordinate;
+	}
+	
+	public void transportShape(Circle circle, int current_x ,
+			int current_y, int aim_x, int aim_y) {
 		
 		double duration = ((Math.abs(aim_x-current_x) + Math.abs(aim_y - current_y))/60);
 		System.out.println("the duration: "+duration);
@@ -157,6 +203,12 @@ public class new_animation extends Application{
 	public void transportImage(Group pane, ImageView imageview, double current_x ,
 			double current_y, double aim_x, double aim_y) throws InterruptedException {
 //		TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, circle);
+	}
+	
+	private ArrayList<ArrayList<Record>> getRecords() {
+		// TODO Auto-generated method stub
+		Testoutput test = new Testoutput();
+		return test.fullrecords;
 	}
 	
 	public static void main(String[] args) {

@@ -1,12 +1,16 @@
 package application;
 
+import javafx.scene.shape.Circle;
+
 public class Coordinate {
 	private int x;
 	private int y;
+	private Circle circle;
 	
 	public Coordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
+		this.circle = new Circle(x, y, 30);
 	}
 	
 	@Override
@@ -46,4 +50,13 @@ public class Coordinate {
 	public void setY(int y) {
 		this.y = y;
 	}
+
+	public Circle getCircle() {
+		return circle;
+	}
+
+	public void setCircle(Circle circle) {
+		this.circle = circle;
+	}
+	
 }
