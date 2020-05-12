@@ -31,12 +31,12 @@ public abstract class Traffic {
         buffer = new ArrayList<>();
     }
 
-    public void reset(){
+    public void reset() {
         this.status = MOVE;
         visited = new ArrayList<>();
         buffer = new ArrayList<>();
         currentPos = null;
-        intendPos= null;
+        intendPos = null;
     }
 
     boolean isTraveled(Grid g) {
@@ -57,21 +57,29 @@ public abstract class Traffic {
     public Record move() {
         if (status == MOVE) {
             currentPos.exitGrid(this);
+            currentPos.intendToLeave(this);
             currentPos = intendPos;
             currentPos.enterGrid(this);
+            visited.add(currentPos);
             if (currentPos.isExit()) {
                 status = EXIT;
                 currentPos.intendToLeave(this);
             }
             //System.out.println(this.getType()+this.getNo()+" move to ("+ currentPos.getAxis()[0] + " "+currentPos.getAxis()[1]+")");
-            return new Record(this.getType(),this.no,"move",currentPos.getAxis()[0],currentPos.getAxis()[1]);
+            return new Record(this.getType(), this.no, "move", currentPos.getAxis()[0], currentPos.getAxis()[1]);
+        }
+        if (status == STOP) {
+            return new Record(this.getType(), this.no, "stop", currentPos.getAxis()[0], currentPos.getAxis()[1]);
         }
         return null;
     }
 
     public void selectDirection() {
+        if (status == STOP && intendPos != null) {
+            return;
+        }
         status = MOVE;
-        if(this.intendPos != null) {
+        if (this.intendPos != null) {
             intendPos.intendToLeave(this);
         }
     }
@@ -93,7 +101,7 @@ public abstract class Traffic {
         }
         double passRate = 1.0;
         for (Traffic t : intendPos.getIntendTraffics()) {
-            if(t.equals(this)){
+            if (t.equals(this)) {
                 continue;
             }
             if (this instanceof Car || t instanceof Car) {
@@ -107,22 +115,23 @@ public abstract class Traffic {
     }
 
     public ArrayList<Record> checkIfMoveAble() {
-        if (this.status != MOVE) {
-            buffer.add(new Record(this.getType(), this.no, "stop"));
+        if (this.status == STOP) {
+            buffer.add(new Record(this.getType(), this.no, "yield"));
             return buffer;
         }
         if (this.intendPos.getTraffics().isEmpty()) {
-            buffer.add(new Record(this.getType(), this.no, "move"));
+            buffer.add(new Record(this.getType(), this.no, "pass"));
             return buffer;
         }
         for (Traffic t : this.intendPos.getTraffics()) {
             if (t.status == STOP) {
                 buffer = new ArrayList<>();
-                buffer.add(new Record(this.getType(), this.no, "stop"));
+                this.status = STOP;
+                buffer.add(new Record(this.getType(), this.no, "yield"));
                 return buffer;
             }
         }
-        buffer.add(new Record(this.getType(), this.no, "move"));
+        buffer.add(new Record(this.getType(), this.no, "pass"));
         return buffer;
     }
 }

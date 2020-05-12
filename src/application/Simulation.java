@@ -36,7 +36,7 @@ public class Simulation {
         fullRecord = new ArrayList<>();
         max_involve_traffic = 6;
     }
-    
+
     public void reset() {
         grids = Grid.generateGrids();
         for (Traffic t : allTraffic) {
@@ -161,13 +161,17 @@ public class Simulation {
                 if(!checkCar(g.getTraffics())){
                     continue;
                 }
+                ArrayList<Traffic> temp = new ArrayList<>();
                 for (Traffic t : g.getTraffics()) {
                     Record r = new Record(t.getType(), t.getNo(), "crash", g.getAxis()[0], g.getAxis()[1]);
                     fullRecord.get(turnCount).add(r);
                     movementRecord.get(turnCount).add(r);
-                    t.currentPos.exitGrid(t);
+                    temp.add(t);
                     t.intendPos.intendToLeave(t);
                     inGridTraffic.remove(t);
+                }
+                for(Traffic t: temp){
+                    g.exitGrid(t);
                 }
                 crashCount++;
             }

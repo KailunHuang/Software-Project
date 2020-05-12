@@ -27,6 +27,10 @@ public class Walker extends Traffic {
         }
     }
 
+    public static void resetCount() {
+        count = 0;
+    }
+
     @Override
     public void selectDirection() {
         super.selectDirection();
@@ -46,16 +50,12 @@ public class Walker extends Traffic {
         }
     }
 
-    public void chooseAction(){
+    public void chooseAction() {
         this.selectDirection();
         super.chooseAction();
     }
 
-    public static void resetCount(){
-        count = 0;
-    }
-
-    public String getType(){
+    public String getType() {
         return V_type;
     }
 }
