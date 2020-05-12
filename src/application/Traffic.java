@@ -57,7 +57,7 @@ public abstract class Traffic {
     public Record move() {
         if (status == MOVE) {
             currentPos.exitGrid(this);
-            currentPos.intendToLeave(this);
+            intendPos.intendToLeave(this);
             currentPos = intendPos;
             currentPos.enterGrid(this);
             visited.add(currentPos);
@@ -69,6 +69,7 @@ public abstract class Traffic {
             return new Record(this.getType(), this.no, "move", currentPos.getAxis()[0], currentPos.getAxis()[1]);
         }
         if (status == STOP) {
+            //System.out.println(this.getType()+this.getNo()+" move to ("+ currentPos.getAxis()[0] + " "+currentPos.getAxis()[1]+")");
             return new Record(this.getType(), this.no, "stop", currentPos.getAxis()[0], currentPos.getAxis()[1]);
         }
         return null;
