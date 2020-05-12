@@ -58,13 +58,11 @@ public class new_animation extends Application{
 //	    cyclist.setLayoutX(0);
 //	    cyclist.setLayoutY(180);
 //	    root.getChildren().add(cyclist);
-	    loadInitialTraffics(root);
+//	    loadInitialTraffics(root);
 	    
 	   
 
-	    
-	    
-//	    transportImage(root, cyclist, 0, 180, 120, 180);
+	    drawCarAnimations(root);
 //	    transportShape(circle, 30, 210, 150, 210);
 //	    transportShape(circle, 150, 210, 330, 210);
 //	    transportShape(circle2, 210, 30, 210, 150);
@@ -74,7 +72,6 @@ public class new_animation extends Application{
 	    primaryStage.setScene(scene);
         primaryStage.show();
 	}
-	
 	
 	public static void loadRoadImage(GridPane gridpane) {
 		int columns = 8;
@@ -123,6 +120,52 @@ public class new_animation extends Application{
 		}
 	}
 	
+	
+	public void drawCarAnimations(Group root) {
+		int j = 0;
+		while (j < records.size()-1) {
+			System.out.println("round: "+j);
+			ArrayList<Record> round0 = records.get(j);
+			ArrayList<Record> round1 = records.get(j+1);
+			updateRecordList(round0, round1);
+			for (String i : current_records.keySet()) {
+				
+				if (!root.getChildren().contains(current_records.get(i).getCircle())) {
+					System.out.println(current_records.get(i).toString());
+					root.getChildren().add(current_records.get(i).getCircle());
+				}
+				int currentx = current_records.get(i).getX();
+				int currenty = current_records.get(i).getY();
+				int futurex = future_records.get(i).getX();
+				int futurey = future_records.get(i).getY();
+				if (currentx != futurex || currenty != futurey) {
+					transportShape(current_records.get(i).getCircle(), currentx, currenty, futurex, futurey);
+				}
+			}
+			j++;
+		}
+	}
+	
+	public void updateRecordList(ArrayList<Record> round0, ArrayList<Record> round1) {
+		for (int i = 0; i < round0.size(); i++) {
+			Record record = round0.get(i);
+			if (record.action.equals("appear") || record.action.equals("move") || 
+					record.action.equals("stop")) {
+				Coordinate coordinate = extractCoordinate(record);
+				current_records.put(record.selfname, coordinate);
+			}
+		}
+		
+		for (int i = 0; i < round1.size(); i++) {
+			Record record = round1.get(i);
+			if (record.action.equals("appear") || record.action.equals("move") || 
+					record.action.equals("stop")) {
+				Coordinate coordinate = extractCoordinate(record);
+				future_records.put(record.selfname, coordinate);
+			}
+		}
+	}
+	
 	public void loadInitialTraffics(Group root) {
 		ArrayList<Record> round0 = records.get(0);
 		ArrayList<Record> round1 = records.get(1);
@@ -146,17 +189,22 @@ public class new_animation extends Application{
 		}
 		for (String i : current_records.keySet()) {
 			root.getChildren().add(current_records.get(i).getCircle());
-			System.out.println(i+" "+current_records.get(i).getX()+" "+current_records.get(i).getX());
-			System.out.println(i+" "+future_records.get(i).getX()+ " "+future_records.get(i).getY());
+//			System.out.println(i+" "+current_records.get(i).getX()+" "+current_records.get(i).getX());
+//			System.out.println(i+" "+future_records.get(i).getX()+ " "+future_records.get(i).getY());
 			int currentx = current_records.get(i).getX();
 			int currenty = current_records.get(i).getY();
 			int futurex = future_records.get(i).getX();
 			int futurey = future_records.get(i).getY();
 			if (currentx != futurex || currenty != futurey) {
 				transportShape(current_records.get(i).getCircle(), currentx, currenty, futurex, futurey);
+				System.out.println(current_records.get(i).getCircle().getCenterX());
+				System.out.println(current_records.get(i).getCircle().getCenterY());
 			}
-//			transportShape((Circle) i.getShape(), );
 		}
+		
+//		for (String i : current_records.keySet()) {
+//			root.getChildren().remove(current_records.get(i).getCircle());
+//		}
 		
 	}
 	
@@ -173,28 +221,26 @@ public class new_animation extends Application{
 		Duration TRANSLATE_DURATION = Duration.seconds(duration);
 		TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, circle);
 		
-//	    transition.setOnFinished(new EventHandler<ActionEvent>() {
-//	      @Override public void handle(ActionEvent t) {
-//	        circle.setCenterX(circle.getTranslateX() + circle.getCenterX());
-//	        circle.setCenterY(circle.getTranslateY() + circle.getCenterY());
-//	        circle.setCenterX(aim_x);
-//	        circle.setCenterY(aim_y);
+	    transition.setOnFinished(new EventHandler<ActionEvent>() {
+	      @Override public void handle(ActionEvent t) {
+	        circle.setCenterX(circle.getTranslateX() + circle.getCenterX());
+	        circle.setCenterY(circle.getTranslateY() + circle.getCenterY());
 //	        System.out.println(circle.getTranslateX());
 //	        System.out.println(circle.getTranslateY());
-//	        System.out.println(circle.getCenterX());
-//	        System.out.println(circle.getCenterY());
+	        System.out.println(circle.getCenterX());
+	        System.out.println(circle.getCenterY());
 //	        System.out.print("\n");
-//	        circle.setTranslateX(0);
-//	        circle.setTranslateY(0);
-//	        
-//	      }
-//	    });
+	        circle.setTranslateX(0);
+	        circle.setTranslateY(0);
+	        
+	      }
+	    });
 		
 	    transition.setToX(aim_x - circle.getCenterX());
         transition.setToY(aim_y - circle.getCenterY());
         transition.playFromStart();
-        System.out.println(circle.getCenterX());
-        System.out.println(circle.getCenterY());
+//        System.out.println(circle.getCenterX());
+//        System.out.println(circle.getCenterY());
 //        circle.setCenterX(aim_x);
 //        circle.setCenterY(aim_y);
 	}

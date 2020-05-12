@@ -59,4 +59,9 @@ public class Coordinate {
 		this.circle = circle;
 	}
 	
+	@Override
+	public String toString() {
+		return ("["+x+","+y+"]");
+	}
+	
 }
