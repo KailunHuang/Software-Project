@@ -6,10 +6,10 @@ import java.util.ArrayList;
  * @author Jiexin.Luo
  * @date {2020/5/5}
  */
-public class Testoutput {
+
 	
-	public ArrayList<Record> snapshot = null;
-    public ArrayList<ArrayList<Record>> fullrecords = new ArrayList<>();
+public ArrayList<Record> snapshot = null;
+public ArrayList<ArrayList<Record>> fullrecords = new ArrayList<>();
 	
    public Testoutput(){
       

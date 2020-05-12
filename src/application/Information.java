@@ -8,10 +8,9 @@ public class Information {
 	private final SimpleStringProperty gender;
 	
 	
-	public Information(String ctype, String ae, String gder) {
+	public Information(String ctype, String age, String gder) {
 		this.cartype=new SimpleStringProperty(ctype);
-		this.age=new SimpleStringProperty(ae);
-		
+		this.age=new SimpleStringProperty(age);
 		this.gender=new SimpleStringProperty(gder);
 	}
 	
