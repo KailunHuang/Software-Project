@@ -12,7 +12,7 @@ public class Interation {
     private static ArrayList<Traffic> trafficList;
     public static final int CRASH = -1;
     public static final int[][] PAYOFF_CAR_CAR = {{-10,-2},{-4,2},{5,-1},{-20,-4}};
-    public static final int[][] PAYOFF_CAR_WALKER = {{10,-2},{-5,2},{5,-1},{-40,-99}};
+    public static final int[][] PAYOFF_CAR_WALKER = {{-10,-2},{-5,2},{5,-1},{-40,-99}};
     public static final int[][] PAYOFF_CAR_BIKE = {{-10,-4},{-5,2},{5,-1},{-30,-99}};
     static{
         trafficList = new ArrayList<>();
@@ -49,14 +49,20 @@ public class Interation {
         if(pass_probs[0]>1.0){
             pass_probs[0] = 1.0;
         }
+        else if(pass_probs[0]<0){
+            pass_probs[0] = 0.05;
+        }
         if(Math.random()<b.carelessRate){
             pass_probs[1] = 1.0;
         }
         else {
-            pass_probs[1]= 1.0 - (double) (payoffs[3][0]-payoffs[1][0]) / (double) (payoffs[0][0]+payoffs[3][0]-payoffs[1][0]-payoffs[2][0]);
+            pass_probs[1]= 1.0 - (double) (payoffs[3][0]-payoffs[2][0]) / (double) (payoffs[0][0]+payoffs[3][0]-payoffs[1][0]-payoffs[2][0]);
         }
         if(pass_probs[1]>1.0){
             pass_probs[1] = 1.0;
+        }
+        else if(pass_probs[1]<0){
+            pass_probs[1] = 0.05;
         }
         return pass_probs;
     }

@@ -33,8 +33,12 @@ public class Walker extends Traffic {
 
     @Override
     public void selectDirection() {
+        if (status == STOP && intendPos != null) {
+            status = MOVE;
+            return;
+        }
         super.selectDirection();
-        if (currentPos == null) {
+        if (currentPos == null || status == STOP) {
             return;
         }
         ArrayList<Grid> availableGrids = this.currentPos.getNextGridsForNonCar();
@@ -48,6 +52,7 @@ public class Walker extends Traffic {
             intendPos = g;
             g.intendToGo(this);
         }
+        status = MOVE;
     }
 
     public void chooseAction() {

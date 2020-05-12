@@ -5,12 +5,19 @@ package application;
  * @date {2020/5/5}
  */
 public class Record {
+    //The type of the traffic subject;
     String selftype;
+    //The name of the traffic subject;
     String selfname;
+    //The action of the subject do;
     String action;
+    //The type of the object that the subject interact with
     String targettype;
+    //The name of the object that the subject interact with
     String targetname;
+    //The x position of the location when the action performed
     int posx;
+    //The y position of the location when the action performed
     int posy;
 
     //type of action: meet, appear, exit, pass, stop, crash, move , yield

@@ -34,6 +34,10 @@ public class Cyclist extends Traffic {
     @Override
     public void selectDirection() {
         super.selectDirection();
+        if (status == STOP && intendPos != null) {
+            status = MOVE;
+            return;
+        }
         if (currentPos == null) {
             return;
         }
@@ -48,6 +52,7 @@ public class Cyclist extends Traffic {
             intendPos = g;
             g.intendToGo(this);
         }
+        status = MOVE;
     }
 
     public void chooseAction() {

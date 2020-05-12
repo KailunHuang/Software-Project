@@ -204,6 +204,16 @@ public class Grid {
         return emptyGrids;
     }
 
+    public static ArrayList<Grid> CheckSelfLoop(ArrayList<Grid> grids) {
+        ArrayList<Grid> deadlocks = new ArrayList<>();
+        for (Grid g : grids) {
+            if (g.getNextGridsForCar().contains(g) || g.getNextGridsForNonCar().contains(g)) {
+                deadlocks.add(g);
+            }
+        }
+        return deadlocks;
+    }
+
     public void enterGrid(Traffic t) {
         traffics.add(t);
     }
@@ -251,4 +261,10 @@ public class Grid {
         return nextGridsForCar;
     }
 
+    public boolean equals(Object o) {
+        if (o instanceof Grid) {
+            return this.equals((Grid) o);
+        }
+        return false;
+    }
 }

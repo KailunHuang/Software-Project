@@ -55,6 +55,10 @@ public class Car extends Traffic {
 
     public void selectDirection() {
         super.selectDirection();
+        if (status == STOP && intendPos != null) {
+            status = MOVE;
+            return;
+        }
         if (currentPos == null || currentPos.isExit()) {
             return;
         }
@@ -69,6 +73,7 @@ public class Car extends Traffic {
             intendPos = g;
             g.intendToGo(this);
         }
+        status = MOVE;
     }
 
     public String getType() {

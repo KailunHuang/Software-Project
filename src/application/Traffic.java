@@ -56,6 +56,10 @@ public abstract class Traffic {
 
     public Record move() {
         if (status == MOVE) {
+            if (currentPos.equals(intendPos)) {
+                System.out.println("deadloop: " + currentPos.getAxis()[0] + " , " + currentPos.getAxis()[1]);
+                System.exit(0);
+            }
             currentPos.exitGrid(this);
             intendPos.intendToLeave(this);
             currentPos = intendPos;
@@ -65,11 +69,11 @@ public abstract class Traffic {
                 status = EXIT;
                 currentPos.intendToLeave(this);
             }
-            //System.out.println(this.getType()+this.getNo()+" move to ("+ currentPos.getAxis()[0] + " "+currentPos.getAxis()[1]+")");
+            //System.out.println(this.getType() + this.getNo() + " move to (" + currentPos.getAxis()[0] + " " + currentPos.getAxis()[1] + ")");
             return new Record(this.getType(), this.no, "move", currentPos.getAxis()[0], currentPos.getAxis()[1]);
         }
         if (status == STOP) {
-            //System.out.println(this.getType()+this.getNo()+" move to ("+ currentPos.getAxis()[0] + " "+currentPos.getAxis()[1]+")");
+            //System.out.println(this.getType() + this.getNo() + " stop (" + currentPos.getAxis()[0] + " " + currentPos.getAxis()[1] + ")");
             return new Record(this.getType(), this.no, "stop", currentPos.getAxis()[0], currentPos.getAxis()[1]);
         }
         return null;
@@ -79,7 +83,6 @@ public abstract class Traffic {
         if (status == STOP && intendPos != null) {
             return;
         }
-        status = MOVE;
         if (this.intendPos != null) {
             intendPos.intendToLeave(this);
         }
@@ -111,6 +114,7 @@ public abstract class Traffic {
             passRate = passRate * Interation.passrate_singal(this, t);
         }
         if (Math.random() > passRate) {
+            //System.out.println(this.getType()+" "+this.getNo()+" rate: "+passRate);
             this.status = STOP;
         }
     }
@@ -125,6 +129,9 @@ public abstract class Traffic {
             return buffer;
         }
         for (Traffic t : this.intendPos.getTraffics()) {
+            if (this.getV_type() != "Car" && t.getV_type() != "Car") {
+                continue;
+            }
             if (t.status == STOP) {
                 buffer = new ArrayList<>();
                 this.status = STOP;
