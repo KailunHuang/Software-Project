@@ -112,7 +112,7 @@ public class Configuration_2 extends Application{
 			
 			Label Car_Type = new Label("Car type:");
 			grid.add(Car_Type, 0, 0);
-			ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("Car", "Track", "Bus"));
+			ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("Car", "Truck", "Bus"));
 			cb.setVisible(true);
 			grid.add(cb, 1, 0);
 			
@@ -262,6 +262,56 @@ public class Configuration_2 extends Application{
 				}
 	        	}
 	        });
+	        
+	        ArrayList<Traffic> list2 = new ArrayList<>();
+	        simulate_button.setOnAction(e->{
+	        int ii=table.getItems().size();
+	        	for(int ty=0;ty<ii;ty++) {
+	        		int age=Integer.parseInt(value(2,table,ty));
+	        		if((!value(0,table,ty).equals("Cyclist"))&&(!value(0,table,ty).equals("Walker"))) {
+	        			if(value(1,table,ty).equals("Male")) {
+	        				
+	        				list2.add(new Car(value(0,table,ty).substring(4),true,age));
+	        			}
+	        			else {
+	        				list2.add(new Car(value(0,table,ty).substring(4),false,age));
+	        			}
+	        		
+	        		}
+	        		else if(value(0,table,ty).equals("Walker")) {
+	        			if(value(1,table,ty).equals("Male")) {
+	        				list2.add(new Walker(true,age));
+	        			}
+	        			else {
+	        				list2.add(new Walker(false,age));
+	        			}
+	        		}
+	        		else {
+	        			if(value(1,table,ty).equals("Male")) {
+	        				list2.add(new Cyclist(true,age));
+	        			}
+	        			else {
+	        				list2.add(new Cyclist(false,age));
+	        			}
+	        		}
+	        	}
+				Simulation openn=new Simulation(list2);
+				try
+				{
+					openn.start_simulate();
+					primaryStage.hide();
+					 ArrayList<ArrayList<Record>> result = openn.getMovementRecord();
+				        for(int i=0;i<result.size();i++){
+				            System.out.println("round "+i+" :");
+				            for(Record r:result.get(i)){
+				                System.out.println("     "+r);
+				            }
+				        }
+				}
+				catch(Exception e1) {
+					e1.printStackTrace();
+				}
+			});
 	        
 	        
 	        
