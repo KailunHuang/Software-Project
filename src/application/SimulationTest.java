@@ -15,6 +15,10 @@ public class SimulationTest {
         for(int i=0;i<=10;i++){
             list.add(new Car(true,25));
         }
+        for(int i=0;i<=5;i++){
+            list.add(new Car("Truck",true,25));
+        }
+        ArrayList<Grid> deadlocks = Grid.CheckSelfLoop(Grid.generateGrids());
         Simulation s = new Simulation(list);
         s.start_simulate();
         ArrayList<ArrayList<Record>> result = s.getMovementRecord();

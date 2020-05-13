@@ -27,10 +27,18 @@ public class Walker extends Traffic {
         }
     }
 
+    public static void resetCount() {
+        count = 0;
+    }
+
     @Override
     public void selectDirection() {
+        if (status == STOP && intendPos != null) {
+            status = MOVE;
+            return;
+        }
         super.selectDirection();
-        if (currentPos == null) {
+        if (currentPos == null || status == STOP) {
             return;
         }
         ArrayList<Grid> availableGrids = this.currentPos.getNextGridsForNonCar();
@@ -44,18 +52,15 @@ public class Walker extends Traffic {
             intendPos = g;
             g.intendToGo(this);
         }
+        status = MOVE;
     }
 
-    public void chooseAction(){
+    public void chooseAction() {
         this.selectDirection();
         super.chooseAction();
     }
 
-    public static void resetCount(){
-        count = 0;
-    }
-
-    public String getType(){
+    public String getType() {
         return V_type;
     }
 }

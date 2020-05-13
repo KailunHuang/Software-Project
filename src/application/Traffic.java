@@ -31,12 +31,12 @@ public abstract class Traffic {
         buffer = new ArrayList<>();
     }
 
-    public void reset(){
+    public void reset() {
         this.status = MOVE;
         visited = new ArrayList<>();
         buffer = new ArrayList<>();
         currentPos = null;
-        intendPos= null;
+        intendPos = null;
     }
 
     boolean isTraveled(Grid g) {
@@ -56,22 +56,34 @@ public abstract class Traffic {
 
     public Record move() {
         if (status == MOVE) {
+            if (currentPos.equals(intendPos)) {
+                System.out.println("deadloop: " + currentPos.getAxis()[0] + " , " + currentPos.getAxis()[1]);
+                System.exit(0);
+            }
             currentPos.exitGrid(this);
+            intendPos.intendToLeave(this);
             currentPos = intendPos;
             currentPos.enterGrid(this);
+            visited.add(currentPos);
             if (currentPos.isExit()) {
                 status = EXIT;
                 currentPos.intendToLeave(this);
             }
-            //System.out.println(this.getType()+this.getNo()+" move to ("+ currentPos.getAxis()[0] + " "+currentPos.getAxis()[1]+")");
-            return new Record(this.getType(),this.no,"move",currentPos.getAxis()[0],currentPos.getAxis()[1]);
+            //System.out.println(this.getType() + this.getNo() + " move to (" + currentPos.getAxis()[0] + " " + currentPos.getAxis()[1] + ")");
+            return new Record(this.getType(), this.no, "move", currentPos.getAxis()[0], currentPos.getAxis()[1]);
+        }
+        if (status == STOP) {
+            //System.out.println(this.getType() + this.getNo() + " stop (" + currentPos.getAxis()[0] + " " + currentPos.getAxis()[1] + ")");
+            return new Record(this.getType(), this.no, "stop", currentPos.getAxis()[0], currentPos.getAxis()[1]);
         }
         return null;
     }
 
     public void selectDirection() {
-        status = MOVE;
-        if(this.intendPos != null) {
+        if (status == STOP && intendPos != null) {
+            return;
+        }
+        if (this.intendPos != null) {
             intendPos.intendToLeave(this);
         }
     }
@@ -93,7 +105,7 @@ public abstract class Traffic {
         }
         double passRate = 1.0;
         for (Traffic t : intendPos.getIntendTraffics()) {
-            if(t.equals(this)){
+            if (t.equals(this)) {
                 continue;
             }
             if (this instanceof Car || t instanceof Car) {
@@ -102,27 +114,32 @@ public abstract class Traffic {
             passRate = passRate * Interation.passrate_singal(this, t);
         }
         if (Math.random() > passRate) {
+            //System.out.println(this.getType()+" "+this.getNo()+" rate: "+passRate);
             this.status = STOP;
         }
     }
 
     public ArrayList<Record> checkIfMoveAble() {
-        if (this.status != MOVE) {
-            buffer.add(new Record(this.getType(), this.no, "stop"));
+        if (this.status == STOP) {
+            buffer.add(new Record(this.getType(), this.no, "yield"));
             return buffer;
         }
         if (this.intendPos.getTraffics().isEmpty()) {
-            buffer.add(new Record(this.getType(), this.no, "move"));
+            buffer.add(new Record(this.getType(), this.no, "pass"));
             return buffer;
         }
         for (Traffic t : this.intendPos.getTraffics()) {
+            if (this.getV_type() != "Car" && t.getV_type() != "Car") {
+                continue;
+            }
             if (t.status == STOP) {
                 buffer = new ArrayList<>();
-                buffer.add(new Record(this.getType(), this.no, "stop"));
+                this.status = STOP;
+                buffer.add(new Record(this.getType(), this.no, "yield"));
                 return buffer;
             }
         }
-        buffer.add(new Record(this.getType(), this.no, "move"));
+        buffer.add(new Record(this.getType(), this.no, "pass"));
         return buffer;
     }
 }

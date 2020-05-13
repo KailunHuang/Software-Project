@@ -29,6 +29,7 @@ public class Simulation {
      */
     /**
      * Constructor
+     *
      * @param trafficList
      */
     Simulation(ArrayList<Traffic> trafficList) {
@@ -36,7 +37,7 @@ public class Simulation {
         fullRecord = new ArrayList<>();
         max_involve_traffic = 6;
     }
-    
+
     public void reset() {
         grids = Grid.generateGrids();
         for (Traffic t : allTraffic) {
@@ -46,7 +47,7 @@ public class Simulation {
         Walker.resetCount();
         Cyclist.resetCount();
         unEmployedTraffic = new ArrayList<>();
-        for(Traffic t: allTraffic){
+        for (Traffic t : allTraffic) {
             unEmployedTraffic.add(t);
         }
         inGridTraffic = new ArrayList<>();
@@ -78,12 +79,12 @@ public class Simulation {
             crash_detection();
             deploy();
             exit_detection();
-            for (Traffic t:inGridTraffic){
+            for (Traffic t : inGridTraffic) {
                 t.chooseAction();
             }
-            for (Traffic t:inGridTraffic){
+            for (Traffic t : inGridTraffic) {
                 ArrayList<Record> records = t.checkIfMoveAble();
-                for(Record r:records){
+                for (Record r : records) {
                     fullRecord.get(turnCount).add(r);
                 }
             }
@@ -94,6 +95,7 @@ public class Simulation {
 
     /**
      * get the number of crashes in the simulation.
+     *
      * @return
      */
     public int getCrashCount() {
@@ -102,6 +104,7 @@ public class Simulation {
 
     /**
      * get the number of turns of the whole simulation.
+     *
      * @return
      */
     public int getTurnCount() {
@@ -112,6 +115,7 @@ public class Simulation {
      * get the full record of each traffic object during the simulation,
      * the record is a 2-d array, the first index indicate the number of turn and the second
      * index indicate the index of records during that turn;
+     *
      * @return
      */
     public ArrayList<ArrayList<Record>> getFullRecord() {
@@ -122,6 +126,7 @@ public class Simulation {
      * get the record of the movement record of each traffic object during the simulation,
      * the record is a 2-d array, the first index indicate the number of turn and the second
      * index indicate the index of records during that turn;
+     *
      * @return
      */
     public ArrayList<ArrayList<Record>> getMovementRecord() {
@@ -130,6 +135,7 @@ public class Simulation {
 
     /**
      * set the number of traffic object
+     *
      * @param max_involve_traffic
      */
     public void setMax_involve_traffic(int max_involve_traffic) {
@@ -138,6 +144,7 @@ public class Simulation {
 
     /**
      * Get the list of traffic object involved into the simulation.
+     *
      * @return
      */
     public ArrayList<Traffic> getTrafficList() {
@@ -146,6 +153,7 @@ public class Simulation {
 
     /**
      * Set the list of traffic object involved into the simulation.
+     *
      * @return
      */
     public void setTrafficList(ArrayList<Traffic> allTraffic) {
@@ -158,35 +166,39 @@ public class Simulation {
     private void crash_detection() {
         for (Grid g : grids) {
             if (g.getTraffics().size() > 1) {
-                if(!checkCar(g.getTraffics())){
+                if (!checkCar(g.getTraffics())) {
                     continue;
                 }
+                ArrayList<Traffic> temp = new ArrayList<>();
                 for (Traffic t : g.getTraffics()) {
                     Record r = new Record(t.getType(), t.getNo(), "crash", g.getAxis()[0], g.getAxis()[1]);
                     fullRecord.get(turnCount).add(r);
                     movementRecord.get(turnCount).add(r);
-                    t.currentPos.exitGrid(t);
+                    temp.add(t);
                     t.intendPos.intendToLeave(t);
                     inGridTraffic.remove(t);
+                }
+                for (Traffic t : temp) {
+                    g.exitGrid(t);
                 }
                 crashCount++;
             }
         }
     }
 
-    private boolean checkCar(ArrayList<Traffic> trafficList){
-        for (Traffic t:trafficList){
-            if(t instanceof Car){
+    private boolean checkCar(ArrayList<Traffic> trafficList) {
+        for (Traffic t : trafficList) {
+            if (t instanceof Car) {
                 return true;
             }
         }
         return false;
     }
 
-    private void exit_detection(){
+    private void exit_detection() {
         ArrayList<Traffic> temp = new ArrayList<>();
-        for (Traffic t:inGridTraffic){
-            if(t.status==Traffic.EXIT){
+        for (Traffic t : inGridTraffic) {
+            if (t.status == Traffic.EXIT) {
                 Record r = new Record(t.getType(), t.getNo(), "exit", t.currentPos.getAxis()[0], t.currentPos.getAxis()[1]);
                 fullRecord.get(turnCount).add(r);
                 movementRecord.get(turnCount).add(r);
@@ -194,7 +206,7 @@ public class Simulation {
                 temp.add(t);
             }
         }
-        for(Traffic t:temp){
+        for (Traffic t : temp) {
             inGridTraffic.remove(t);
         }
     }
@@ -203,28 +215,28 @@ public class Simulation {
         if (unEmployedTraffic.isEmpty() || inGridTraffic.size() >= max_involve_traffic) {
             return;
         }
-        ArrayList<Traffic> temp = new ArrayList<>();
-        for (Traffic t : unEmployedTraffic) {
-            if ((t instanceof Car) && inGridTraffic.size() < max_involve_traffic && Math.random() <= 0.6) {
+        int counter = unEmployedTraffic.size();
+        for (int i = 0; i < counter; i++) {
+            Traffic t = unEmployedTraffic.get(rnd.nextInt(unEmployedTraffic.size()));
+            double rndnum = Math.random();
+            if ((t instanceof Car) && inGridTraffic.size() < max_involve_traffic && rndnum <= 0.6) {
                 ArrayList<Grid> listOfGrid = Grid.findEmptyEntry(grids, true);
-                addTraffic(temp, t, listOfGrid);
-            } else if (!(t instanceof Car) && inGridTraffic.size() < max_involve_traffic && Math.random() <= 0.6) {
+                addTraffic(t, listOfGrid);
+                unEmployedTraffic.remove(t);
+            } else if (!(t instanceof Car) && inGridTraffic.size() < max_involve_traffic && rndnum <= 0.6) {
                 ArrayList<Grid> listOfGrid = Grid.findEmptyEntry(grids, false);
-                addTraffic(temp, t, listOfGrid);
+                addTraffic(t, listOfGrid);
+                unEmployedTraffic.remove(t);
             }
-        }
-        for (Traffic t : temp) {
-            unEmployedTraffic.remove(t);
         }
     }
 
-    private void addTraffic(ArrayList<Traffic> temp, Traffic t, ArrayList<Grid> listOfGrid) {
+    private void addTraffic(Traffic t, ArrayList<Grid> listOfGrid) {
         if (!listOfGrid.isEmpty()) {
             t.setCurrentPos(listOfGrid.get(rnd.nextInt(listOfGrid.size())));
             Record r = new Record(t.getType(), t.getNo(), "appear", t.currentPos.getAxis()[0], t.currentPos.getAxis()[1]);
             fullRecord.get(turnCount).add(r);
             movementRecord.get(turnCount).add(r);
-            temp.add(t);
             inGridTraffic.add(t);
             //System.out.println(t.getType()+t.getNo()+"deploy in "+t.currentPos.getAxis()[0]+" "+t.currentPos.getAxis()[1]);
         }
