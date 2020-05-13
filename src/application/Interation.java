@@ -49,7 +49,7 @@ public class Interation {
         if(pass_probs[0]>1.0){
             pass_probs[0] = 1.0;
         }
-        else if(pass_probs[0]<0){
+        else if(pass_probs[0]<=0){
             pass_probs[0] = 0.05;
         }
         if(Math.random()<b.carelessRate){
@@ -61,7 +61,7 @@ public class Interation {
         if(pass_probs[1]>1.0){
             pass_probs[1] = 1.0;
         }
-        else if(pass_probs[1]<0){
+        else if(pass_probs[1]<=0){
             pass_probs[1] = 0.05;
         }
         return pass_probs;
