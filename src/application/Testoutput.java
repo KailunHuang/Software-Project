@@ -7,11 +7,12 @@ import java.util.ArrayList;
  * @date {2020/5/5}
  */
 
+public class Testoutput{
 	
-public ArrayList<Record> snapshot = null;
-public ArrayList<ArrayList<Record>> fullrecords = new ArrayList<>();
+	public ArrayList<Record> snapshot = null;
+	public ArrayList<ArrayList<Record>> fullrecords = new ArrayList<>();
 	
-   public Testoutput(){
+	public Testoutput(){
       
        snapshot = new ArrayList<>();
        snapshot.add(new Record("car","1","appear",3,0));
