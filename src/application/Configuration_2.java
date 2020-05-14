@@ -295,22 +295,16 @@ public class Configuration_2 extends Application{
 	        			}
 	        		}
 	        	}
-				Simulation openn=new Simulation(list2);
+				ButtonClickSimulation openn=new ButtonClickSimulation(list2);
 				try
 				{
-					openn.start_simulate();
+					openn.start(new Stage());
 					primaryStage.hide();
-					 ArrayList<ArrayList<Record>> result = openn.getMovementRecord();
-				        for(int i=0;i<result.size();i++){
-				            System.out.println("round "+i+" :");
-				            for(Record r:result.get(i)){
-				                System.out.println("     "+r);
-				            }
-				        }
 				}
 				catch(Exception e1) {
 					e1.printStackTrace();
 				}
+					
 			});
 	        
 	        
