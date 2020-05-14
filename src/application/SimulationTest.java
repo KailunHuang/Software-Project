@@ -16,12 +16,12 @@ public class SimulationTest {
             list.add(new Car(true,25));
         }
         for(int i=0;i<=5;i++){
-            list.add(new Car("Truck",true,25));
+            list.add(new Car("Bus",true,25));
         }
         ArrayList<Grid> deadlocks = Grid.CheckSelfLoop(Grid.generateGrids());
         Simulation s = new Simulation(list);
         s.start_simulate();
-        ArrayList<ArrayList<Record>> result = s.getMovementRecord();
+        ArrayList<ArrayList<Record>> result = s.getFullRecord();
         for(int i=0;i<result.size();i++){
             System.out.println("round "+i+" :");
             for(Record r:result.get(i)){

@@ -40,12 +40,25 @@ public class Simulation {
 
     public void reset() {
         grids = Grid.generateGrids();
-        for (Traffic t : allTraffic) {
-            t.reset();
-        }
         Car.resetCount();
         Walker.resetCount();
         Cyclist.resetCount();
+        ArrayList<Traffic> newTraffic = new ArrayList<>();
+        for (Traffic t : allTraffic) {
+            if(t instanceof Walker){
+                Traffic newt = new Walker(t.is_Male,t.age);
+                newTraffic.add(newt);
+            }
+            else if(t instanceof Cyclist){
+                Traffic newt = new Cyclist(t.is_Male,t.age);
+                newTraffic.add(newt);
+            }
+            else{
+                Traffic newt = new Car(t.getType(),t.is_Male,t.age);
+                newTraffic.add(newt);
+            }
+        }
+        allTraffic = newTraffic;
         unEmployedTraffic = new ArrayList<>();
         for (Traffic t : allTraffic) {
             unEmployedTraffic.add(t);
