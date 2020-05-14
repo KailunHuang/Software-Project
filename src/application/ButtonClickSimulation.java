@@ -18,7 +18,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
@@ -70,7 +73,13 @@ public class ButtonClickSimulation extends Application{
 			public void handle(Event event) {
 				round++;
 				try {
-					ShowEachRoundAnimation(root);
+					if (round < records.size()-1) {
+						ShowEachRoundAnimation(root);
+					}else if(round == records.size()-1){
+						ShowEachRoundPosition(gameGrid);
+					}else {
+						primaryStage.hide();
+					}
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -80,6 +89,8 @@ public class ButtonClickSimulation extends Application{
 	    	
 	    });
 	    
+	    System.out.println("record size: "+records.size());
+	     
 	    gameGrid.add(next, 0, 0);
 	    root.getChildren().add(gameGrid);
 	
@@ -149,12 +160,12 @@ public class ButtonClickSimulation extends Application{
 			if (record.action.equals("appear") || record.action.equals("move") || 
 					record.action.equals("stop")) {
 				if (record.selftype.equals("Car")) {
-					shape = new Circle(30);
+					shape = new Rectangle(50, 50);
 					gridpane.add(shape, record.posx, record.posy);
 					System.out.println(shape.getLayoutX());
 					traffics.add(shape);
 				}else if(record.selftype.equals("Walker")) {
-					shape = new Rectangle(60, 60);
+					shape = new Circle(30);
 					gridpane.add(shape, record.posx, record.posy);
 					traffics.add(shape);
 				}
@@ -182,9 +193,9 @@ public class ButtonClickSimulation extends Application{
 			if (record.action.equals("appear") || record.action.equals("move") || 
 					record.action.equals("stop")) {
 				if (record.selftype.equals("Car")) {
-					shape = new Rectangle(60, 60);
-					shape.setLayoutX(x-30);
-					shape.setLayoutY(y-30);
+					shape = new Rectangle(50, 50);
+					shape.setLayoutX(x-25);
+					shape.setLayoutY(y-25);
 					gridpane.getChildren().add(shape);
 					traffics.add(shape);
 					String traffic_id = record.selftype+record.selfname;
@@ -195,6 +206,36 @@ public class ButtonClickSimulation extends Application{
 					shape.setLayoutY(y);
 					traffics.add(shape);
 					gridpane.getChildren().add(shape);
+					String traffic_id = record.selftype+record.selfname;
+					current_records.put(traffic_id, shape);
+				}else if(record.selftype.equals("Truck")) {
+					shape = new Rectangle(50, 50);
+					shape.setFill(Color.BLUE);
+					shape.setLayoutX(x-25);
+					shape.setLayoutY(y-25);
+					gridpane.getChildren().add(shape);
+					traffics.add(shape);
+					String traffic_id = record.selftype+record.selfname;
+					current_records.put(traffic_id, shape);
+				}else if(record.selftype.equals("Bus")) {
+//					System.out.println("yes");
+					shape = new Rectangle(50, 50);
+					shape.setFill(Color.CORAL);
+					shape.setLayoutX(x-25);
+					shape.setLayoutY(y-25);
+					gridpane.getChildren().add(shape);
+					traffics.add(shape);
+					String traffic_id = record.selftype+record.selfname;
+					current_records.put(traffic_id, shape);
+				}else if(record.selftype.contentEquals("Cyclist")) {
+					shape = new Rectangle(40, 40);
+					shape.setFill(Color.CADETBLUE);
+					shape.setLayoutX(x-20);
+					shape.setLayoutY(y-20);
+					((Rectangle) shape).setArcWidth(40.0);
+					((Rectangle) shape).setArcHeight(40.0);
+					gridpane.getChildren().add(shape);
+					traffics.add(shape);
 					String traffic_id = record.selftype+record.selfname;
 					current_records.put(traffic_id, shape);
 				}
@@ -210,11 +251,6 @@ public class ButtonClickSimulation extends Application{
 			}
 		}
 		
-		
-//		for (int i = 0; i < traffics.size(); i++) {
-//			gridpane.getChildren().add(traffics.get(i));
-//		}
-		
 		for (int i = 0; i < round1.size(); i++) {
 			Record record = round1.get(i);
 			if (record.action.equals("appear") || record.action.equals("move") ||
@@ -226,6 +262,7 @@ public class ButtonClickSimulation extends Application{
 		}
 		
 		for (String i : current_records.keySet()) {
+//			System.out.println(i);
 			if (future_records.get(i) != null) {
 				System.out.println(i);
 				int currentx = (int) current_records.get(i).getLayoutX();
@@ -255,11 +292,14 @@ public class ButtonClickSimulation extends Application{
 	}
 	
 	public Coordinate extractCoordinate(Record record, String type) {
-		if (type.equals("Car")) {
-			Coordinate coordinate = new Coordinate(record.posx*60, record.posy*60);
+		if (type.equals("Car") || type.equals("Truck") || type.equals("Bus")) {
+			Coordinate coordinate = new Coordinate(record.posx*60+5, record.posy*60+5);
 			return coordinate;
 		}else if(type.equals("Walker")) {
 			Coordinate coordinate = new Coordinate(30+record.posx*60, 30+record.posy*60);
+			return coordinate;
+		}else if(type.equals("Cyclist")) {
+			Coordinate coordinate = new Coordinate(10+record.posx*60, 10+record.posy*60);
 			return coordinate;
 		}
 		return null;
@@ -292,12 +332,12 @@ public class ButtonClickSimulation extends Application{
 		{
 			openn.start_simulate();
 			result = openn.getFullRecord();
-	        for(int i=0;i<result.size();i++){
-	            System.out.println("round "+i+" :");
-	            for(Record r:result.get(i)){
-	                System.out.println("     "+r);
-	            }
-	        }
+//	        for(int i=0;i<result.size();i++){
+//	            System.out.println("round "+i+" :");
+//	            for(Record r:result.get(i)){
+//	                System.out.println("     "+r);
+//	            }
+//	        }
 		}
 		catch(Exception e1) {
 			e1.printStackTrace();
