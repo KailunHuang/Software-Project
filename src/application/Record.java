@@ -32,7 +32,7 @@ public class Record {
         selfname = name;
         this.action = action;
         this.targettype = targettype;
-        this.targetname = name;
+        this.targetname = targetname;
     }
 
     public Record(String type, String name, String action, int posx, int posy) {

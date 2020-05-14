@@ -129,7 +129,7 @@ public abstract class Traffic {
             return buffer;
         }
         for (Traffic t : this.intendPos.getTraffics()) {
-            if (this.getV_type() != "Car" && t.getV_type() != "Car") {
+            if ((!this.getV_type().equals("Car")) && (!t.getV_type().equals("Car"))) {
                 continue;
             }
             if (t.status == STOP) {
@@ -141,5 +141,15 @@ public abstract class Traffic {
         }
         buffer.add(new Record(this.getType(), this.no, "pass"));
         return buffer;
+    }
+
+    public boolean equals(Object o){
+        if(!(o instanceof Traffic)){
+            return false;
+        }
+        else if(((Traffic) o).getType().equals(this.getType())&&((Traffic) o).no.equals(this.no)){
+            return true;
+        }
+        return false;
     }
 }
