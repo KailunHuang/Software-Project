@@ -109,7 +109,7 @@ public abstract class Traffic {
                 continue;
             }
             if (this instanceof Car || t instanceof Car) {
-                buffer.add(new Record(this.getType(), this.no, "meet", t.getType(), t.no));
+                buffer.add(new Record(this.getType(), this.no,this.is_Male,this.age,"meet", t.getType(), t.no,t.is_Male,t.age));
             }
             passRate = passRate * Interation.passrate_singal(this, t);
         }
