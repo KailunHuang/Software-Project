@@ -12,16 +12,20 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Outcome extends Application{
-
+	
+	private ArrayList<ArrayList<Record>> records = new ArrayList<ArrayList<Record>>();
+	
+	public Outcome(ArrayList<ArrayList<Record>> records) {
+		this.records = records;
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
 		
 		VBox root = new VBox();
 		
 		ListView intersection = new ListView();
 		
-		ArrayList<ArrayList<Record>> records = new ArrayList<ArrayList<Record>>();
 		records = getIntersections();
 		int total_clashes = 0;
 		for (int i = 0; i < records.size(); i++) {
@@ -76,24 +80,7 @@ public class Outcome extends Application{
 				}
 				
 			}
-//			GridPane cell = new GridPane();
-//			Text t1 = new Text("Traffic1: ");
-//			Text t2 = new Text("Traffic2: ");
-//			Text traffic1 = new Text(item.getTraffic1().V_type);
-//			Text traffic2 = new Text(item.getTraffic2().V_type);
-//			Text action = new Text("Action");
-//			Text traffic1_action = new Text(item.getTraffic1_move().toString());
-//			Text traffic2_action = new Text(item.getTraffic2_move().toString());
-//			Text outcome = new Text("Outcome: "+item.getResult());
-//			cell.add(t1, 0, 1);
-//			cell.add(t2, 0, 2);
-//			cell.add(traffic1, 1, 1);
-//			cell.add(traffic2, 1, 2);
-//			cell.add(action, 2, 0);
-//			cell.add(traffic2_action, 2, 1);
-//			cell.add(traffic1_action, 2, 2);
-//			cell.add(outcome, 0, 3, 2, 1);
-//			intersection.getItems().add(cell);
+
 		}
 		
 		root.getChildren().add(intersection);

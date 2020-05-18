@@ -83,7 +83,6 @@ public class WelcomePage3 extends Application {
 		Scanner myReader = new Scanner(filename);
 	    while (myReader.hasNextLine()) {
 	        String[] data = myReader.nextLine().split(",");
-//	        if one line has more than three variables then it's a car object 
 	        if (data.length > 3) {
 	        	if(data[2].equals("Male")) {
 	        		is_Male = true;
@@ -117,7 +116,6 @@ public class WelcomePage3 extends Application {
 	public File chooseOpenFile() {
         File file = null;
         JFileChooser fileChooser = new JFileChooser();
-//		  fileChooser.setFileFilter(new FileNameExtensionFilter("*.png", "png"));
         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             file = fileChooser.getSelectedFile();
         }
