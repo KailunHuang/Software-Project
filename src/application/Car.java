@@ -19,6 +19,7 @@ public class Car extends Traffic {
             this.crash_factor = 0.8;
             this.stop_factor = 1.0;
         } else if (type.equals("Bus")) {
+            this.stop_factor = 1.10;
             this.speed_factor = 0.85;
             this.crash_factor = 1.2;
         } else {

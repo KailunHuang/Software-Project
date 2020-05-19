@@ -26,7 +26,7 @@ public class Outcome extends Application{
 		
 		ListView intersection = new ListView();
 		
-		records = getIntersections();
+//		records = getIntersections();
 		int total_clashes = 0;
 		for (int i = 0; i < records.size(); i++) {
 			ArrayList<Record> turn = records.get(i);
@@ -105,11 +105,11 @@ public class Outcome extends Application{
 
 
 
-	private ArrayList<ArrayList<Record>> getIntersections() {
-		// TODO Auto-generated method stub
-		Testoutput test = new Testoutput();
-		return test.fullrecords;
-	}
+//	private ArrayList<ArrayList<Record>> getIntersections() {
+//		// TODO Auto-generated method stub
+//		Testoutput test = new Testoutput();
+//		return test.fullrecords;
+//	}
 
 
 
