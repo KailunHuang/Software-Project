@@ -71,7 +71,7 @@ public class WelcomePage3 extends Application {
 		StackPane page=new StackPane();
 		page.getChildren().add(newSimulation);
 		page.getChildren().add(load);
-		Scene welpage=new Scene(page,1500,900);
+		Scene welpage=new Scene(page,500,400);
 		arg0.setScene(welpage);
 		arg0.show();
 	}

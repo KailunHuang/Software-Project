@@ -296,13 +296,14 @@ public class Configuration_2 extends Application{
 	        		}
 	        	}
 				Simulation openn=new Simulation(list2);
-				ButtonClickSimulation animation_scene=new ButtonClickSimulation(list2);
 				try
 				{
-					animation_scene.start(new Stage());
+
 					openn.start_simulate();
 					primaryStage.hide();
-					 ArrayList<ArrayList<Record>> result = openn.getFullRecord();
+					ArrayList<ArrayList<Record>> result = openn.getFullRecord();
+					ButtonClickSimulation animation_scene=new ButtonClickSimulation(result);
+					animation_scene.start(new Stage());
 				        for(int i=0;i<result.size();i++){
 				            System.out.println("round "+i+" :");
 				            for(Record r:result.get(i)){

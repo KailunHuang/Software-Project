@@ -42,9 +42,9 @@ public class ButtonClickSimulation extends Application{
 	
 	
 	
-	public ButtonClickSimulation(ArrayList<Traffic> traffic_collection) {
+	public ButtonClickSimulation(ArrayList<ArrayList<Record>> records) {
 		super();
-		this.records = getRecords(traffic_collection);
+		this.records = records;
 	}
 
 	@Override
@@ -356,27 +356,21 @@ public class ButtonClickSimulation extends Application{
 		}
 	}
 	
-	private ArrayList<ArrayList<Record>> getRecords(ArrayList<Traffic> traffic_collection) {
-		// TODO Auto-generated method stub
-		System.out.println((traffic_collection==null)+" "+"Simulation page");
-		Simulation openn=new Simulation(traffic_collection);
-		ArrayList<ArrayList<Record>> result = new ArrayList<ArrayList<Record>>();
-		try
-		{
-			openn.start_simulate();
-			result = openn.getFullRecord();
-//	        for(int i=0;i<result.size();i++){
-//	            System.out.println("round "+i+" :");
-//	            for(Record r:result.get(i)){
-//	                System.out.println("     "+r);
-//	            }
-//	        }
-		}
-		catch(Exception e1) {
-			e1.printStackTrace();
-		}
-		return result;
-	}
+//	private ArrayList<ArrayList<Record>> getRecords(ArrayList<Traffic> traffic_collection) {
+//		// TODO Auto-generated method stub
+//		System.out.println((traffic_collection==null)+" "+"Simulation page");
+//		Simulation openn=new Simulation(traffic_collection);
+//		ArrayList<ArrayList<Record>> result = new ArrayList<ArrayList<Record>>();
+//		try
+//		{
+//			openn.start_simulate();
+//			result = openn.getFullRecord();
+//		}
+//		catch(Exception e1) {
+//			e1.printStackTrace();
+//		}
+//		return result;
+//	}
 	
 //	private ArrayList<ArrayList<Record>> getRecords(){
 //		Testoutput t = new Testoutput();
