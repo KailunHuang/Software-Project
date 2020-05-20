@@ -1,14 +1,15 @@
 package application;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,10 +31,13 @@ import javafx.util.Duration;
 public class ButtonClickSimulation extends Application{
 	
 	private ArrayList<ArrayList<Record>> records = new ArrayList<ArrayList<Record>>();
-	private ArrayList<Shape> traffics = new ArrayList<Shape>();
+	private ArrayList<ImageView> traffics = new ArrayList<ImageView>();
 	private ArrayList<ImageView> crashes = new ArrayList<ImageView>();
-	private HashMap<String, Shape> current_records = new HashMap<String, Shape>();
+	private HashMap<String, ImageView> current_records = new HashMap<String, ImageView>();
 	private HashMap<String, Coordinate> future_records = new HashMap<String, Coordinate>();
+	private Timeline timeline;
+	private GridPane gameGrid = new GridPane();
+	private Group root = new Group();
 	private int round = -1;
 	
 	
@@ -46,10 +50,10 @@ public class ButtonClickSimulation extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-		Group root = new Group();
+
 		int rows = 8;
 		int columns = 11;
-		GridPane gameGrid = new GridPane();
+
 //		Draw Background Roads
 	    for (int i = 0; i < columns; i++) {
 	        ColumnConstraints columnn = new ColumnConstraints(60);
@@ -66,32 +70,43 @@ public class ButtonClickSimulation extends Application{
 	    
 	    loadRoadImage(gameGrid);
 	    Button next = new Button("Next");
-	    next.setMaxSize(60, 60);
-	    next.setOnAction(new EventHandler() {
-
-			@Override
-			public void handle(Event event) {
-				round++;
+	    
+	    timeline = new Timeline();
+	    timeline.setCycleCount(Timeline.INDEFINITE);
+	    
+	    int duration = 1000;
+	    KeyFrame keyFrame = new KeyFrame(Duration.millis(duration), new EventHandler<ActionEvent>() {
+	    	 
+            @Override
+            public void handle(ActionEvent event) {
+            	round++;
 				try {
 					if (round < records.size()-1) {
 						ShowEachRoundAnimation(root);
 					}else if(round == records.size()-1){
 						ShowEachRoundPosition(gameGrid);
 					}else {
+//						Outcome outcome = new Outcome(records);
+//						outcome.start(new Stage());
 						primaryStage.hide();
+						timeline.stop();
 					}
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				
-			}
-	    	
-	    });
+            }
+        });
+	    timeline.getKeyFrames().add(keyFrame);
+	    timeline.playFromStart();
 	    
+
 	    System.out.println("record size: "+records.size());
 	     
-	    gameGrid.add(next, 0, 0);
+//	    gameGrid.add(next, 0, 0);
 	    root.getChildren().add(gameGrid);
 	
 	    
@@ -147,7 +162,7 @@ public class ButtonClickSimulation extends Application{
 		}
 	}
 	
-	public void ShowEachRoundPosition(GridPane gridpane) {
+	public void ShowEachRoundPosition(GridPane gridpane) throws FileNotFoundException {
 		ArrayList<Record> record_array = records.get(round);
 		System.out.println("record array: "+record_array.size());
 		clearTraffics(gridpane);
@@ -159,16 +174,25 @@ public class ButtonClickSimulation extends Application{
 			System.out.println(record.selftype + " " + record.selfname + " " + record.action +" "+ record.posx + "," + record.posy);
 			if (record.action.equals("appear") || record.action.equals("move") || 
 					record.action.equals("stop")) {
+				
 				if (record.selftype.equals("Car")) {
-					shape = new Rectangle(50, 50);
-					gridpane.add(shape, record.posx, record.posy);
-					System.out.println(shape.getLayoutX());
-					traffics.add(shape);
+					
+					Image image = new Image(new FileInputStream("src/application/img/car.png"));
+					ImageView imageView = new ImageView(image);
+					imageView.setFitHeight(60); 
+				    imageView.setFitWidth(60); 
+					gridpane.add(imageView, record.posx, record.posy);
+					traffics.add(imageView);
+					
 				}else if(record.selftype.equals("Walker")) {
-					shape = new Circle(30);
-					gridpane.add(shape, record.posx, record.posy);
-					traffics.add(shape);
+					Image image = new Image(new FileInputStream("src/application/img/walker_right.png"));
+					ImageView imageView = new ImageView(image);
+					imageView.setFitHeight(60); 
+				    imageView.setFitWidth(60); 
+					gridpane.add(imageView, record.posx, record.posy);
+					traffics.add(imageView);
 				}
+				
 			}
 		}
 	}
@@ -193,51 +217,60 @@ public class ButtonClickSimulation extends Application{
 			if (record.action.equals("appear") || record.action.equals("move") || 
 					record.action.equals("stop")) {
 				if (record.selftype.equals("Car")) {
-					shape = new Rectangle(50, 50);
-					shape.setLayoutX(x-25);
-					shape.setLayoutY(y-25);
-					gridpane.getChildren().add(shape);
-					traffics.add(shape);
+					Image image = new Image(new FileInputStream("src/application/img/car.png"));
+					ImageView imageView = new ImageView(image); 
+					imageView.setLayoutX(x-30);
+					imageView.setLayoutY(y-30);
+					imageView.setFitHeight(60); 
+				    imageView.setFitWidth(60); 
+					gridpane.getChildren().add(imageView);
+					traffics.add(imageView);
 					String traffic_id = record.selftype+record.selfname;
-					current_records.put(traffic_id, shape);
+					current_records.put(traffic_id, imageView);
 				}else if(record.selftype.equals("Walker")) {
-					shape = new Circle(30);
-					shape.setLayoutX(x);
-					shape.setLayoutY(y);
-					traffics.add(shape);
-					gridpane.getChildren().add(shape);
+					Image image = new Image(new FileInputStream("src/application/img/walker_right.png"));
+					ImageView imageView = new ImageView(image); 
+					imageView.setLayoutX(x-30);
+					imageView.setLayoutY(y-30);
+					imageView.setFitHeight(60); 
+				    imageView.setFitWidth(60); 
+					gridpane.getChildren().add(imageView);
+					traffics.add(imageView);
 					String traffic_id = record.selftype+record.selfname;
-					current_records.put(traffic_id, shape);
+					current_records.put(traffic_id, imageView);
 				}else if(record.selftype.equals("Truck")) {
-					shape = new Rectangle(50, 50);
-					shape.setFill(Color.BLUE);
-					shape.setLayoutX(x-25);
-					shape.setLayoutY(y-25);
-					gridpane.getChildren().add(shape);
-					traffics.add(shape);
+					Image image = new Image(new FileInputStream("src/application/img/truck.png"));
+					ImageView imageView = new ImageView(image); 
+					imageView.setLayoutX(x-30);
+					imageView.setLayoutY(y-30);
+					imageView.setFitHeight(60); 
+				    imageView.setFitWidth(60); 
+					gridpane.getChildren().add(imageView);
+					traffics.add(imageView);
 					String traffic_id = record.selftype+record.selfname;
-					current_records.put(traffic_id, shape);
+					current_records.put(traffic_id, imageView);
 				}else if(record.selftype.equals("Bus")) {
-//					System.out.println("yes");
-					shape = new Rectangle(50, 50);
-					shape.setFill(Color.CORAL);
-					shape.setLayoutX(x-25);
-					shape.setLayoutY(y-25);
-					gridpane.getChildren().add(shape);
-					traffics.add(shape);
+					Image image = new Image(new FileInputStream("src/application/img/truck.png"));
+					ImageView imageView = new ImageView(image); 
+					imageView.setLayoutX(x-30);
+					imageView.setLayoutY(y-30);
+					imageView.setFitHeight(60); 
+				    imageView.setFitWidth(60); 
+					gridpane.getChildren().add(imageView);
+					traffics.add(imageView);
 					String traffic_id = record.selftype+record.selfname;
-					current_records.put(traffic_id, shape);
+					current_records.put(traffic_id, imageView);
 				}else if(record.selftype.contentEquals("Cyclist")) {
-					shape = new Rectangle(40, 40);
-					shape.setFill(Color.CADETBLUE);
-					shape.setLayoutX(x-20);
-					shape.setLayoutY(y-20);
-					((Rectangle) shape).setArcWidth(40.0);
-					((Rectangle) shape).setArcHeight(40.0);
-					gridpane.getChildren().add(shape);
-					traffics.add(shape);
+					Image image = new Image(new FileInputStream("src/application/img/bike.png"));
+					ImageView imageView = new ImageView(image); 
+					imageView.setLayoutX(x-30);
+					imageView.setLayoutY(y-30);
+					imageView.setFitHeight(60); 
+				    imageView.setFitWidth(60); 
+					gridpane.getChildren().add(imageView);
+					traffics.add(imageView);
 					String traffic_id = record.selftype+record.selfname;
-					current_records.put(traffic_id, shape);
+					current_records.put(traffic_id, imageView);
 				}
 			}else if(record.action.equals("crash")) {
 				Image image = new Image(new FileInputStream("src/application/img/crash.png"));
@@ -279,7 +312,7 @@ public class ButtonClickSimulation extends Application{
 		}
 	}
 	
-	public void transportShape(Shape shape, int current_x ,
+	public void transportShape(ImageView shape, int current_x ,
 			int current_y, int aim_x, int aim_y) {
 		
 		double duration = ((Math.abs(aim_x-current_x) + Math.abs(aim_y - current_y))/60);
@@ -293,13 +326,13 @@ public class ButtonClickSimulation extends Application{
 	
 	public Coordinate extractCoordinate(Record record, String type) {
 		if (type.equals("Car") || type.equals("Truck") || type.equals("Bus")) {
-			Coordinate coordinate = new Coordinate(record.posx*60+5, record.posy*60+5);
+			Coordinate coordinate = new Coordinate(record.posx*60, record.posy*60);
 			return coordinate;
 		}else if(type.equals("Walker")) {
-			Coordinate coordinate = new Coordinate(30+record.posx*60, 30+record.posy*60);
+			Coordinate coordinate = new Coordinate(record.posx*60, record.posy*60);
 			return coordinate;
 		}else if(type.equals("Cyclist")) {
-			Coordinate coordinate = new Coordinate(10+record.posx*60, 10+record.posy*60);
+			Coordinate coordinate = new Coordinate(record.posx*60, record.posy*60);
 			return coordinate;
 		}
 		return null;
@@ -345,12 +378,13 @@ public class ButtonClickSimulation extends Application{
 		return result;
 	}
 	
-	private ArrayList<ArrayList<Record>> getRecords(){
-		Testoutput t = new Testoutput();
-		return t.fullrecords;
-	}
+//	private ArrayList<ArrayList<Record>> getRecords(){
+//		Testoutput t = new Testoutput();
+//		return t.fullrecords;
+//	}
 	
 	public static void main(String[] args) {
         Application.launch(args);
     }
+
 }

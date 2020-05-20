@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
@@ -36,6 +37,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Configuration_2 extends Application{
@@ -228,9 +230,7 @@ public class Configuration_2 extends Application{
 	        			AgeTextField.getText(),
 	        			Gend));
 	        	traffic_collection.add(traffic);
-	     //   	System.out.print(traffic_collection);
 	        });
-	       // ObservableValue observableValue = tableColumn.getCellObservableValue(0);
 	  
 	        save_button.setOnAction((ActionEvent e)->{
 	        	int i=table.getItems().size();
@@ -295,16 +295,133 @@ public class Configuration_2 extends Application{
 	        			}
 	        		}
 	        	}
-				ButtonClickSimulation openn=new ButtonClickSimulation(list2);
+				Simulation openn=new Simulation(list2);
+				ButtonClickSimulation animation_scene=new ButtonClickSimulation(list2);
 				try
 				{
-					openn.start(new Stage());
+					animation_scene.start(new Stage());
+					openn.start_simulate();
 					primaryStage.hide();
+					 ArrayList<ArrayList<Record>> result = openn.getFullRecord();
+				        for(int i=0;i<result.size();i++){
+				            System.out.println("round "+i+" :");
+				            for(Record r:result.get(i)){
+				                System.out.println("     "+r);
+				            }
+				        }
+				        
+				        VBox roott = new VBox();
+						
+						ListView intersection = new ListView();
+						
+
+						int total_clashes = 0;
+						for (int i = 0; i < result.size()-1; i++) {
+							ArrayList<Record> turn = result.get(i);
+							ArrayList<Record> turn2 = result.get(i+1);
+							for (int j = 0; j < turn.size(); j++) {
+								Record item = turn.get(j);
+								if (item.action.equals("meet")) {
+									GridPane cell = new GridPane();
+									Text t1 = new Text("Traffic1: ");
+									Text t2 = new Text("Traffic2: ");
+									Text traffic1 = new Text(item.selftype);
+									Text traffic2 = new Text(item.targettype);
+									Text action = new Text("Action");
+									Text traffic1_action = new Text();
+									Text traffic2_action = new Text();
+									Text traffic1_gender;
+									Text traffic2_gender;
+									
+									String traffic1_age = Integer.toString(item.age1);
+									String traffic2_age = Integer.toString(item.age2);
+									
+									
+									Boolean crash = false;
+									for (int n=0; n < turn.size(); n++) {
+										Record temp_record = turn.get(n);
+										if (temp_record.action.equals("pass")) {
+											if (temp_record.selfname==item.selfname) {
+												traffic1_action.setText(" "+temp_record.action);
+											}
+											if(temp_record.selfname==item.targetname) {
+												traffic2_action.setText(" "+temp_record.action);
+											}
+										}
+										else if(temp_record.action.equals("yield")) {
+											if (temp_record.selfname==item.selfname) {
+												traffic1_action.setText(" "+temp_record.action);
+											}
+											if(temp_record.selfname==item.targetname) {
+												traffic2_action.setText(" "+temp_record.action);
+											}
+										}//else if(temp_record.action.equals("crash")) {
+											//crash = true;
+									//	}
+									}
+									if(item.is_male1) {
+										traffic1=new Text(item.selftype+" "+"male"+" "+traffic1_age);
+									}
+									else {
+										traffic1_gender = new Text(item.selftype+" "+"female"+" "+traffic1_age);
+									}
+									if(item.is_male2) {
+										traffic2=new Text(item.targettype+" "+"male"+" "+traffic2_age);
+										}
+									else {
+										traffic2=new Text(item.targettype+" "+"female"+" "+traffic2_age);
+										}
+									
+									for(int m=0;m<turn2.size();m++) {
+										Record cc=turn2.get(m);
+										if(cc.action.equals("crash")) {
+											crash = true;
+										}
+									}
+									
+									
+									
+									Text outcome = new Text();
+									if (crash) {
+										outcome.setText("Outcome: crashed");
+										total_clashes++;
+									}else {
+										outcome.setText("Outcome: safe pass");
+									}
+									//total_clashes++;
+									cell.add(t1, 0, 1);
+									cell.add(t2, 0, 2);
+									cell.add(traffic1, 1, 1);
+									cell.add(traffic2, 1, 2);
+									cell.add(action, 2, 0);
+									cell.add(traffic2_action, 2, 1);
+									cell.add(traffic1_action, 2, 2);
+									cell.add(outcome, 0, 3, 2, 1);
+									intersection.getItems().add(cell);
+								}
+								
+							}
+
+						}
+						
+						roott.getChildren().add(intersection);
+						
+						
+						Text total_clash = new Text("Number of crashes: "+total_clashes);
+						roott.getChildren().add(total_clash);
+						
+						Scene scenee = new Scene(roott,400,400);
+						primaryStage.setScene(scenee);
+						primaryStage.show();
+						 
+				        
+				        
 				}
 				catch(Exception e1) {
 					e1.printStackTrace();
 				}
-					
+				
+				
 			});
 	        
 	        
