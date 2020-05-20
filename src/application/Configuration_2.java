@@ -230,9 +230,7 @@ public class Configuration_2 extends Application{
 	        			AgeTextField.getText(),
 	        			Gend));
 	        	traffic_collection.add(traffic);
-	     //   	System.out.print(traffic_collection);
 	        });
-	       // ObservableValue observableValue = tableColumn.getCellObservableValue(0);
 	  
 	        save_button.setOnAction((ActionEvent e)->{
 	        	int i=table.getItems().size();
@@ -298,8 +296,15 @@ public class Configuration_2 extends Application{
 	        		}
 	        	}
 				Simulation openn=new Simulation(list2);
+<<<<<<< HEAD
 				try
 				{
+=======
+				ButtonClickSimulation animation_scene=new ButtonClickSimulation(list2);
+				try
+				{
+					animation_scene.start(new Stage());
+>>>>>>> f6451bc4504501af519f33df2b7fa34ac0b5792d
 					openn.start_simulate();
 					primaryStage.hide();
 					 ArrayList<ArrayList<Record>> result = openn.getFullRecord();
@@ -314,8 +319,12 @@ public class Configuration_2 extends Application{
 						
 						ListView intersection = new ListView();
 						
+<<<<<<< HEAD
 						//ArrayList<ArrayList<Record>> records = new ArrayList<ArrayList<Record>>();
 						//records = getIntersections();
+=======
+
+>>>>>>> f6451bc4504501af519f33df2b7fa34ac0b5792d
 						int total_clashes = 0;
 						for (int i = 0; i < result.size()-1; i++) {
 							ArrayList<Record> turn = result.get(i);
@@ -402,6 +411,7 @@ public class Configuration_2 extends Application{
 								}
 								
 							}
+<<<<<<< HEAD
 //							GridPane cell = new GridPane();
 //							Text t1 = new Text("Traffic1: ");
 //							Text t2 = new Text("Traffic2: ");
@@ -420,6 +430,9 @@ public class Configuration_2 extends Application{
 //							cell.add(traffic1_action, 2, 2);
 //							cell.add(outcome, 0, 3, 2, 1);
 //							intersection.getItems().add(cell);
+=======
+
+>>>>>>> f6451bc4504501af519f33df2b7fa34ac0b5792d
 						}
 						
 						roott.getChildren().add(intersection);
@@ -438,6 +451,11 @@ public class Configuration_2 extends Application{
 				catch(Exception e1) {
 					e1.printStackTrace();
 				}
+<<<<<<< HEAD
+=======
+				
+				
+>>>>>>> f6451bc4504501af519f33df2b7fa34ac0b5792d
 			});
 	        
 	        

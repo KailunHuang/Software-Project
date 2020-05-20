@@ -11,6 +11,14 @@ public class Record {
     String selfname;
     //The action of the subject do;
     String action;
+
+    boolean is_male1;
+
+    boolean is_male2;
+
+    int age1;
+
+    int age2;
     //The type of the object that the subject interact with
     String targettype;
     //The name of the object that the subject interact with
@@ -27,12 +35,16 @@ public class Record {
         this.action = action;
     }
 
-    public Record(String type, String name, String action, String targettype, String targetname) {
+    public Record(String type, String name, boolean is_male1, int age1, String action, String targettype, String targetname, boolean is_male2, int age2) {
         selftype = type;
         selfname = name;
         this.action = action;
         this.targettype = targettype;
         this.targetname = targetname;
+        this.is_male1 = is_male1;
+        this.is_male2 = is_male2;
+        this.age1 = age1;
+        this.age2 = age2;
     }
 
     public Record(String type, String name, String action, int posx, int posy) {
@@ -74,7 +86,8 @@ public class Record {
     public String toString() {
         switch (this.action) {
             case "meet":
-                return (this.selftype + " " + this.selfname + " " + this.action + " " + this.targettype + " " + this.targetname);
+                return (this.selftype + " " + this.selfname + " ,age:" + this.age1 + " ,gender:" + (this.is_male1 ? "male " : "female ")
+                        + this.action + " " + this.targettype + " " + this.targetname + " ,age:"+this.age1 + " ,gender:" + (this.is_male1 ? "male " : "female "));
             case "move":
                 return (this.selftype + " " + this.selfname + " " + "move to (" + posx + "," + posy + ")");
             case "appear":

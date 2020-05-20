@@ -86,8 +86,8 @@ public class ButtonClickSimulation extends Application{
 					}else if(round == records.size()-1){
 						ShowEachRoundPosition(gameGrid);
 					}else {
-						Outcome outcome = new Outcome(records);
-						outcome.start(new Stage());
+//						Outcome outcome = new Outcome(records);
+//						outcome.start(new Stage());
 						primaryStage.hide();
 						timeline.stop();
 					}
@@ -378,10 +378,10 @@ public class ButtonClickSimulation extends Application{
 		return result;
 	}
 	
-	private ArrayList<ArrayList<Record>> getRecords(){
-		Testoutput t = new Testoutput();
-		return t.fullrecords;
-	}
+//	private ArrayList<ArrayList<Record>> getRecords(){
+//		Testoutput t = new Testoutput();
+//		return t.fullrecords;
+//	}
 	
 	public static void main(String[] args) {
         Application.launch(args);
