@@ -296,9 +296,9 @@ public class Configuration_2 extends Application{
 	        		}
 	        	}
 				Simulation openn=new Simulation(list2);
+
 				try
 				{
-
 					openn.start_simulate();
 					primaryStage.hide();
 					ArrayList<ArrayList<Record>> result = openn.getFullRecord();
@@ -315,7 +315,6 @@ public class Configuration_2 extends Application{
 						
 						ListView intersection = new ListView();
 						
-
 						int total_clashes = 0;
 						for (int i = 0; i < result.size()-1; i++) {
 							ArrayList<Record> turn = result.get(i);
@@ -403,6 +402,7 @@ public class Configuration_2 extends Application{
 								
 							}
 
+
 						}
 						
 						roott.getChildren().add(intersection);
@@ -421,8 +421,7 @@ public class Configuration_2 extends Application{
 				catch(Exception e1) {
 					e1.printStackTrace();
 				}
-				
-				
+
 			});
 	        
 	        
