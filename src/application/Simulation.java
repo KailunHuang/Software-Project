@@ -247,6 +247,9 @@ public class Simulation {
     private void addTraffic(Traffic t, ArrayList<Grid> listOfGrid) {
         if (!listOfGrid.isEmpty()) {
             t.setCurrentPos(listOfGrid.get(rnd.nextInt(listOfGrid.size())));
+            if(t instanceof Car){
+                ((Car) t).setGoal(grids);
+            }
             Record r = new Record(t.getType(), t.getNo(), "appear", t.currentPos.getAxis()[0], t.currentPos.getAxis()[1]);
             fullRecord.get(turnCount).add(r);
             movementRecord.get(turnCount).add(r);

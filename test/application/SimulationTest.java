@@ -18,7 +18,10 @@ public class SimulationTest {
         for(int i=0;i<=5;i++){
             list.add(new Car("Bus",true,25));
         }
-        ArrayList<Grid> deadlocks = Grid.CheckSelfLoop(Grid.generateGrids());
+        ArrayList<Grid> deadlocks = Grid.checkDeadEnd(Grid.generateGrids());
+        for(Grid g:deadlocks){
+            System.out.println("deadends: "+g.getAxis()[0]+" "+g.getAxis()[1]);
+        }
         Simulation s = new Simulation(list);
         s.start_simulate();
         ArrayList<ArrayList<Record>> result = s.getFullRecord();

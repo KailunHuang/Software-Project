@@ -33,37 +33,44 @@ public class Grid {
 
     public static ArrayList<Grid> generateGrids() {
         ArrayList<Grid> grids = new ArrayList<Grid>();
-        Grid previous = new Grid(10, 4);
-        previous.isexit = true;
-        previous.isForCar = true;
-        grids.add(previous);
-        for (int i = 9; i >= 0; i--) {
-            Grid temp = new Grid(i, 4);
-            temp.isForCar = true;
-            temp.nextGridsForCar.add(previous);
-            grids.add(temp);
-            previous = temp;
-        }
-        previous.isentry = true;
-
-        previous = new Grid(0, 3);
-        previous.isexit = true;
-        previous.isForCar = true;
-        grids.add(previous);
-        for (int i = 1; i <= 10; i++) {
-            Grid temp = new Grid(i, 3);
-            temp.isForCar = true;
-            temp.nextGridsForCar.add(previous);
-            grids.add(temp);
-            previous = temp;
-        }
-        previous.isentry = true;
+        grids = addCrossRoad(grids, 0, 10, 4);
+        grids = addCrossRoad(grids, 10, 0, 3);
+        grids = addCrossRoad(grids, 0, 10, 9);
+        grids = addCrossRoad(grids, 10, 0, 8);
 
         grids = addStraightRoad(grids, 2);
         grids = addStraightRoad(grids, 7);
 
         grids = addSideWalk(grids, 1, 5);
         grids = addSideWalk(grids, 6, 5);
+        grids = addSideWalk(grids, 1, 10);
+        grids = addSideWalk(grids, 6, 10);
+        return grids;
+    }
+
+    private static ArrayList<Grid> addCrossRoad(ArrayList<Grid> grids, int startpoint_posx, int endpoint_posx, int posy) {
+        Grid previous = new Grid(endpoint_posx, posy);
+        previous.isexit = true;
+        previous.isForCar = true;
+        grids.add(previous);
+        if (endpoint_posx > startpoint_posx) {
+            for (int i = endpoint_posx - 1; i >= startpoint_posx; i--) {
+                Grid temp = new Grid(i, posy);
+                temp.isForCar = true;
+                temp.nextGridsForCar.add(previous);
+                grids.add(temp);
+                previous = temp;
+            }
+        } else {
+            for (int i = endpoint_posx + 1; i <= startpoint_posx; i++) {
+                Grid temp = new Grid(i, posy);
+                temp.isForCar = true;
+                temp.nextGridsForCar.add(previous);
+                grids.add(temp);
+                previous = temp;
+            }
+        }
+        previous.isentry = true;
         return grids;
     }
 
@@ -148,11 +155,13 @@ public class Grid {
         return grids;
     }
 
+    //add two lines of straight road with opposite direction into the map
     private static ArrayList<Grid> addStraightRoad(ArrayList<Grid> grids, int line) {
-        Grid previous = new Grid(line, 7);
+        Grid previous = new Grid(line, 12);
         previous.isexit = true;
+        previous.isForCar = true;
         grids.add(previous);
-        for (int i = 6; i >= 0; i--) {
+        for (int i = 11; i >= 0; i--) {
             Grid temp = findGrid(grids, line, i);
             if (temp == null) {
                 temp = new Grid(line, i);
@@ -166,8 +175,9 @@ public class Grid {
 
         previous = new Grid(line + 1, 0);
         previous.isexit = true;
+        previous.isForCar = true;
         grids.add(previous);
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 1; i <= 12; i++) {
             Grid temp = findGrid(grids, line + 1, i);
             if (temp == null) {
                 temp = new Grid(line + 1, i);
@@ -204,7 +214,17 @@ public class Grid {
         return emptyGrids;
     }
 
-    public static ArrayList<Grid> CheckSelfLoop(ArrayList<Grid> grids) {
+    public static ArrayList<Grid> findExitsForCar(ArrayList<Grid> grids){
+        ArrayList<Grid> exits = new ArrayList<>();
+        for (Grid g:grids){
+            if(g.isForCar&&g.isExit()){
+                exits.add(g);
+            }
+        }
+        return exits;
+    }
+
+    public static ArrayList<Grid> checkSelfLoop(ArrayList<Grid> grids) {
         ArrayList<Grid> deadlocks = new ArrayList<>();
         for (Grid g : grids) {
             if (g.getNextGridsForCar().contains(g) || g.getNextGridsForNonCar().contains(g)) {
@@ -212,6 +232,16 @@ public class Grid {
             }
         }
         return deadlocks;
+    }
+
+    public static ArrayList<Grid> checkDeadEnd(ArrayList<Grid> grids) {
+        ArrayList<Grid> deadends = new ArrayList<>();
+        for (Grid g : grids) {
+            if (((g.getNextGridsForCar().isEmpty() && g.isForCar) || (g.getNextGridsForNonCar().isEmpty() && g.isForNonCar)) && (!g.isExit())) {
+                deadends.add(g);
+            }
+        }
+        return deadends;
     }
 
     public void enterGrid(Traffic t) {
