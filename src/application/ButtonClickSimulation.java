@@ -51,7 +51,7 @@ public class ButtonClickSimulation extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 
-		int rows = 8;
+		int rows = 13;
 		int columns = 11;
 
 //		Draw Background Roads
@@ -116,21 +116,22 @@ public class ButtonClickSimulation extends Application{
 	}
 	
 	public static void loadRoadImage(GridPane gridpane) {
-		int columns = 8;
+		int columns = 13;
 		int rows = 11;
 		
 		Image image = new Image("application/img/road.png");
-		ArrayList<ImageView> row= new ArrayList<ImageView>();
-		ArrayList<ImageView> row2= new ArrayList<ImageView>();
-		for (int i = 0; i < rows; i++) {
-			ImageView imageView = new ImageView(image); 
-			ImageView imageView2 = new ImageView(image);
-			imageView.setFitWidth(60);
-			imageView.setFitHeight(60);
-			imageView2.setFitWidth(60);
-			imageView2.setFitHeight(60);
-			row.add(imageView);
-			row2.add(imageView2);
+		ArrayList <ArrayList<ImageView>> row= new ArrayList<ArrayList<ImageView>>();
+		int[] row_nums = {3,4,8,9};
+		
+		for (int i = 0; i < 4; i++) {
+			ArrayList<ImageView> views = new ArrayList<ImageView>();
+			for (int j = 0; j < rows; j++) {
+				ImageView imageView = new ImageView(image);
+				imageView.setFitWidth(60);
+				imageView.setFitHeight(60);
+				views.add(imageView);
+			}
+			row.add(views);
 		}
 		
 		ArrayList <ArrayList<ImageView>> column= new ArrayList<ArrayList<ImageView>>();
@@ -149,9 +150,11 @@ public class ButtonClickSimulation extends Application{
 		
 		int[] column_nums = {2,3,7,8};
 		
-		for (int i=0; i < row.size(); i++) {
-			gridpane.add(row.get(i), i, 3);
-			gridpane.add(row2.get(i), i, 4);
+		for (int j=0; j < row_nums.length; j++) {
+			int n = row_nums[j];
+			for (int i=0; i < row.get(j).size(); i++) {
+				gridpane.add(row.get(j).get(i), i, n);
+			}
 		}
 		
 		for (int j=0; j < column.size(); j++) {
