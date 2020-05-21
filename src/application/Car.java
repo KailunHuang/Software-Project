@@ -7,6 +7,8 @@ public class Car extends Traffic {
     private static int count = 0;
     private static Random rnd = new Random();
     private String type;
+    private ArrayList<Grid> intendPath;
+
 
     Car(String type, boolean gender, int age) {
         super(gender, age);
@@ -45,6 +47,15 @@ public class Car extends Traffic {
         count = 0;
     }
 
+    private static boolean BFS_visited(ArrayList<Grid> visited, Grid g) {
+        for (Grid temp : visited) {
+            if (g.equals(temp)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void chooseAction() {
         this.selectDirection();
@@ -63,21 +74,47 @@ public class Car extends Traffic {
         if (currentPos == null || currentPos.isExit()) {
             return;
         }
-        ArrayList<Grid> availableGrids = this.currentPos.getNextGridsForCar();
-        boolean notSelected = true;
-        while (notSelected) {
-            Grid g = availableGrids.get(rnd.nextInt(availableGrids.size()));
-            if (isTraveled(g)) {
-                continue;
-            }
-            notSelected = false;
-            intendPos = g;
-            g.intendToGo(this);
+        int indexNow = intendPath.indexOf(currentPos);
+        if (indexNow < (intendPath.size() - 1)) {
+            intendPos = intendPath.get(indexNow + 1);
+            intendPos.intendToGo(this);
         }
         status = MOVE;
     }
 
+    public void setGoal(ArrayList<Grid> grids) {
+        intendPath = new ArrayList<>();
+        ArrayList<Grid> exits = Grid.findExitsForCar(grids);
+        Grid goal = exits.get(rnd.nextInt(exits.size()));
+        BFS(currentPos, goal);
+    }
+
     public String getType() {
         return type;
+    }
+
+    private void BFS(Grid startPoint, Grid goal) {
+        ArrayList<Grid> visited = new ArrayList<>();
+        ArrayList<Gnode> queue = new ArrayList<>();
+        queue.add(new Gnode(startPoint, null));
+        while (!queue.isEmpty()) {
+            Gnode temp = queue.get(0);
+            visited.add(temp.current);
+            if (temp.current.equals(goal)) {
+                intendPath.add(0, goal);
+                Gnode nodePrev = temp.prev;
+                while (nodePrev != null) {
+                    intendPath.add(0, nodePrev.current);
+                    nodePrev = nodePrev.prev;
+                }
+                return;
+            }
+            for (Grid g : temp.current.getNextGridsForCar()) {
+                if (!BFS_visited(visited, g)) {
+                    queue.add(new Gnode(g, temp));
+                }
+            }
+            queue.remove(0);
+        }
     }
 }

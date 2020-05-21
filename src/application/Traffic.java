@@ -86,6 +86,7 @@ public abstract class Traffic {
         if (this.intendPos != null) {
             intendPos.intendToLeave(this);
         }
+        checkDeadEnd();
     }
 
     public String getV_type() {
@@ -151,5 +152,31 @@ public abstract class Traffic {
             return true;
         }
         return false;
+    }
+
+    private void checkDeadEnd(){
+        int count = 0;
+        if(this.V_type.equals("Car")){
+            for(Grid g:currentPos.getNextGridsForCar()){
+                if(this.isTraveled(g)){
+                    count ++;
+                }
+            }
+            if(count == currentPos.getNextGridsForCar().size()){
+                System.out.println(getType()+" "+getNo()+" reach to deadend: "+currentPos.getAxis()[0]+" , "+currentPos.getAxis()[1]);
+                System.exit(0);
+            }
+        }
+        else{
+            for(Grid g:currentPos.getNextGridsForNonCar()){
+                if(this.isTraveled(g)){
+                    count ++;
+                }
+            }
+            if(count == currentPos.getNextGridsForNonCar().size()){
+                System.out.println(getType()+" "+getNo()+" reach to deadend: "+currentPos.getAxis()[0]+" , "+currentPos.getAxis()[1]);
+                System.exit(0);
+            }
+        }
     }
 }
