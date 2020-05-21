@@ -80,6 +80,15 @@ public class Configuration_2 extends Application{
  	   return a;
 	}
 	
+	public String GenderDefined(Boolean gender) {
+    	if(gender) {
+    		return "  male";
+    	}
+    	else {
+    		return "  female";
+    	}
+    }
+	
 	public void start(Stage primaryStage) {
 		try {
 
@@ -327,14 +336,16 @@ public class Configuration_2 extends Application{
 									Text t2 = new Text("Traffic2: ");
 									Text traffic1 = new Text(item.selftype);
 									Text traffic2 = new Text(item.targettype);
-									Text action = new Text("Action");
+									Text action = new Text(" Action ");
+									Text age = new Text("Age ");
+									Text gender = new Text(" Gender ");
 									Text traffic1_action = new Text();
 									Text traffic2_action = new Text();
 									Text traffic1_gender;
 									Text traffic2_gender;
-									
-									String traffic1_age = Integer.toString(item.age1);
-									String traffic2_age = Integer.toString(item.age2);
+									Text type=new Text("type");
+									Text traffic1_age = new Text(Integer.toString(item.age1));
+									Text traffic2_age = new Text(Integer.toString(item.age2));
 									
 									
 									Boolean crash = false;
@@ -359,18 +370,9 @@ public class Configuration_2 extends Application{
 											//crash = true;
 									//	}
 									}
-									if(item.is_male1) {
-										traffic1=new Text(item.selftype+" "+"male"+" "+traffic1_age);
-									}
-									else {
-										traffic1_gender = new Text(item.selftype+" "+"female"+" "+traffic1_age);
-									}
-									if(item.is_male2) {
-										traffic2=new Text(item.targettype+" "+"male"+" "+traffic2_age);
-										}
-									else {
-										traffic2=new Text(item.targettype+" "+"female"+" "+traffic2_age);
-										}
+									
+									traffic1_gender=new Text(GenderDefined(item.is_male1));
+									traffic2_gender=new Text(GenderDefined(item.is_male2));
 									
 									for(int m=0;m<turn2.size();m++) {
 										Record cc=turn2.get(m);
@@ -391,11 +393,18 @@ public class Configuration_2 extends Application{
 									//total_clashes++;
 									cell.add(t1, 0, 1);
 									cell.add(t2, 0, 2);
+									cell.add(type,1,0);
 									cell.add(traffic1, 1, 1);
 									cell.add(traffic2, 1, 2);
-									cell.add(action, 2, 0);
-									cell.add(traffic2_action, 2, 1);
-									cell.add(traffic1_action, 2, 2);
+									cell.add(action, 4, 0);
+									cell.add(age, 2, 0);
+									cell.add(traffic1_age, 2, 1);
+									cell.add(traffic2_age, 2, 2);
+									cell.add(traffic1_gender, 3, 1);
+									cell.add(traffic2_gender, 3, 2);
+									cell.add(gender, 3, 0);
+									cell.add(traffic2_action, 4, 1);
+									cell.add(traffic1_action, 4, 2);
 									cell.add(outcome, 0, 3, 2, 1);
 									intersection.getItems().add(cell);
 								}
