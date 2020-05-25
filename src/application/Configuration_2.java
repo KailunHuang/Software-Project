@@ -47,10 +47,93 @@ public class Configuration_2 extends Application{
 	ArrayList<String> saveAge=new ArrayList<String>();
 	ArrayList<String> saveGender=new ArrayList<String>();
 	ArrayList<Traffic> traffic_collection = new ArrayList<Traffic>();
+	static ArrayList<Double> StatisticalAge=new ArrayList<Double>();
+	static ArrayList<Double> StatisticalAgeOfYield=new ArrayList<Double>();
+	ArrayList StatisticalGender=new ArrayList();
+	ArrayList StatisticalGenderYield=new ArrayList();
 	
+	static double under30=0;
+	static double from30to45=0;
+	static double from45to60=0;
+	static double over60=0;
+	static double Yunder30=0;
+	static double Yfrom30to45=0;
+	static double Yfrom45to60=0;
+	static double Yover60=0;
+	static double malecrash=0;
+	static double femalecrash=0;
+	static double maleyield=0;
+	static double femaleyield=0;
 	public Configuration_2() {
 		
 	}
+	
+	public static void sumAgeOfCrash(int age) {
+		if(age<30) {
+			under30++;
+			
+		}
+		else if((age>=30)&&(age<45)) {
+			from30to45++;
+			
+		}
+		else if((age>=45)&&(age<=60)) {
+			from45to60++;
+			
+		}
+		else {
+			over60++;
+			
+		}
+	}
+	
+	public static void sumGenderOfCrash(boolean gender) {
+		if(gender) {
+			malecrash++;
+		}
+		else {
+			femalecrash++;
+		}
+	}
+	
+	public static void sumGenderOfYield(boolean gender) {
+		if(gender) {
+			maleyield++;
+		}
+		else {
+			femaleyield++;
+		}
+	}
+	
+	public static String round(int a) {
+		double b=100*StatisticalAge.get(a);
+		return String.format("%.2f", b)+"%";
+	}
+	
+	public static String round2(int a) {
+		double b=100*StatisticalAgeOfYield.get(a);
+		return String.format("%.2f", b)+"%";
+	}
+	
+	public static void sumAgeOfYield(int age) {
+		if(age<30) {
+			Yunder30++;
+			
+		}
+		else if((age>=30)&&(age<45)) {
+			Yfrom30to45++;
+			
+		}
+		else if((age>=45)&&(age<=60)) {
+			Yfrom45to60++;
+			
+		}
+		else {
+			Yover60++;
+			
+		}
+	}
+	
 	
 	public Configuration_2(ArrayList<Traffic> traffic) {
 		this.traffic_collection = traffic;
@@ -79,6 +162,8 @@ public class Configuration_2 extends Application{
  	   String a=observeValue.getValue().toString();
  	   return a;
 	}
+	
+	
 	
 	public String GenderDefined(Boolean gender) {
     	if(gender) {
@@ -324,13 +409,18 @@ public class Configuration_2 extends Application{
 						
 						ListView intersection = new ListView();
 						
-						int total_clashes = 0;
+						double total_clashes = 0;
+						Text crashAge=new Text(" ");
+						Text YieldAge=new Text(" ");
+						double meetyield=0;
 						for (int i = 0; i < result.size()-1; i++) {
+							int computePass=0;
 							ArrayList<Record> turn = result.get(i);
 							ArrayList<Record> turn2 = result.get(i+1);
 							for (int j = 0; j < turn.size(); j++) {
 								Record item = turn.get(j);
 								if (item.action.equals("meet")) {
+									
 									GridPane cell = new GridPane();
 									Text t1 = new Text("Traffic1: ");
 									Text t2 = new Text("Traffic2: ");
@@ -350,27 +440,43 @@ public class Configuration_2 extends Application{
 									
 									Boolean crash = false;
 									for (int n=0; n < turn.size(); n++) {
+										
+										
 										Record temp_record = turn.get(n);
 										if (temp_record.action.equals("pass")) {
 											if (temp_record.selfname==item.selfname) {
 												traffic1_action.setText(" "+temp_record.action);
+												computePass++;
 											}
 											if(temp_record.selfname==item.targetname) {
 												traffic2_action.setText(" "+temp_record.action);
+												computePass++;
 											}
 										}
 										else if(temp_record.action.equals("yield")) {
+											meetyield++;
 											if (temp_record.selfname==item.selfname) {
 												traffic1_action.setText(" "+temp_record.action);
+												sumAgeOfYield(item.age1);
+												sumGenderOfYield(item.is_male1);
 											}
 											if(temp_record.selfname==item.targetname) {
 												traffic2_action.setText(" "+temp_record.action);
+												sumAgeOfYield(item.age2);
+												sumGenderOfYield(item.is_male2);
 											}
 										}//else if(temp_record.action.equals("crash")) {
 											//crash = true;
 									//	}
+										
+										
 									}
-									
+									if(computePass==2) {
+										sumAgeOfCrash(item.age1);
+										sumAgeOfCrash(item.age2);
+										sumGenderOfCrash(item.is_male1);
+										sumGenderOfCrash(item.is_male2);
+									}
 									traffic1_gender=new Text(GenderDefined(item.is_male1));
 									traffic2_gender=new Text(GenderDefined(item.is_male2));
 									
@@ -410,17 +516,64 @@ public class Configuration_2 extends Application{
 								}
 								
 							}
-
-
+							
+							//GridPane cell2 = new GridPane();
+							//cell2.add(crashAge, 0, 1);
+						//	cell2.add(YieldAge, 0, 2);
+							//intersection.getItems().add(cell2);
+						}
+						StatisticalAge.add(under30*1.00/(total_clashes*2));
+						StatisticalAge.add(from30to45*1.00/(total_clashes*2));
+						StatisticalAge.add(from45to60*1.00/(total_clashes*2));
+						double age60=1-StatisticalAge.get(0)-StatisticalAge.get(1)-StatisticalAge.get(2);
+						StatisticalAge.add(age60);
+						StatisticalAge.add(malecrash*1.00/(total_clashes*2));
+						double fecrash=1-StatisticalAge.get(4);
+						StatisticalAge.add(fecrash);
+						
+						StatisticalAgeOfYield.add(Yunder30*1.00/meetyield);
+						StatisticalAgeOfYield.add(Yfrom30to45*1.00/meetyield);
+						StatisticalAgeOfYield.add(Yfrom45to60*1.00/meetyield);
+						double age60Y=1-StatisticalAgeOfYield.get(0)-StatisticalAgeOfYield.get(1)-StatisticalAgeOfYield.get(2);
+						StatisticalAgeOfYield.add(age60Y);
+						StatisticalAgeOfYield.add(maleyield*1.00/meetyield);
+						double femaleyield2=1-StatisticalAgeOfYield.get(4);
+						StatisticalAgeOfYield.add(femaleyield2);
+						
+						ArrayList<String> StaCrash=new ArrayList<String>();
+						ArrayList<String> StaYield=new ArrayList<String>();
+						for(int i=0;i<=5;i++) {
+							StaCrash.add(round(i));
+							StaYield.add(round2(i));
+						}
+						roott.getChildren().add(intersection);
+						if((total_clashes!=0)&&(meetyield!=0)) {
+						crashAge=new Text("Age distribution in the crashes is shown below: \n"+" under 30 years old: "+
+						StaCrash.get(0)+"\n 30 to 45 years old: "+StaCrash.get(1)+"\n 45 to 60 years old: "+StaCrash.get(2)+"\n over 60 years old: "+
+						StaCrash.get(3)+"\n");
+						Text CrashGender=new Text("Gender distribution in the crashes is shown below: \n"+"male: "+
+								StaCrash.get(4)+"\n"+"Female: "+StaCrash.get(5)+"\n");
+						YieldAge=new Text("Age distribution in yield cases is shown below: \n"+" under 30 years old: "+
+						StaYield.get(0)+"\n 30 to 45 years old: "+StaYield.get(1)+"\n 45 to 60 years old: "+StaYield.get(2)+"\n over 60 years old: "+
+						StaYield.get(3)+"\n");
+						Text YieldGender=new Text("Gender distribution in yield cases is shown below: \n"+"male: "+
+								StaYield.get(4)+"\n"+"Female: "+StaYield.get(5));
+						roott.getChildren().add(crashAge);
+						roott.getChildren().add(CrashGender);
+						roott.getChildren().add(YieldAge);
+						roott.getChildren().add(YieldGender);
+						}
+						else {
+							Text un=new Text("Statistical results are unavailable due to the lack of enough vehicles");
+							roott.getChildren().add(un);
 						}
 						
-						roott.getChildren().add(intersection);
+					
+						Text total_clash = new Text("\n"+"Number of crashes: "+total_clashes);
 						
-						
-						Text total_clash = new Text("Number of crashes: "+total_clashes);
 						roott.getChildren().add(total_clash);
 						
-						Scene scenee = new Scene(roott,400,400);
+						Scene scenee = new Scene(roott,600,600);
 						primaryStage.setScene(scenee);
 						primaryStage.show();
 						 
