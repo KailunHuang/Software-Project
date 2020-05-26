@@ -33,10 +33,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -178,7 +176,7 @@ public class Configuration_2 extends Application{
 		try {
 
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,800,400);
+			Scene scene = new Scene(root,850,600);
 			
 			//**********left side of UI*************
 			
@@ -197,20 +195,48 @@ public class Configuration_2 extends Application{
 			tb3.setToggleGroup(group);
 			
 			HBox hbox = new HBox(tb1, tb2, tb3);
-			hbox.setPadding(new Insets(0,0,0,25));
-			
+			hbox.setPadding(new Insets(0,0,5,25));
+
+			// car type selector
+			Label Car_Type = new Label("Car type: ");
+			ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("Car", "Truck", "Bus"));
+			cb.setVisible(true);
+			HBox car_type = new HBox(Car_Type, cb);
+			car_type.setPadding(new Insets(5,0,10,25));
+
+			// setting factors
+			GridPane factor_settings = new GridPane();
+			factor_settings.setAlignment(Pos.CENTER);
+			factor_settings.setHgap(10);
+			factor_settings.setVgap(10);
+			factor_settings.setPadding(new Insets(25, 25, 25, 25));
+			factor_settings.setBorder(new Border(new BorderStroke(Color.BLACK,
+					BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+			factor_settings.setStyle("-fx-border-color: black");
+
+			Label speed_factor = new Label("Speed factor: ");
+			factor_settings.add(speed_factor, 0,0);
+			TextField speed_text = new TextField("0.1");
+			factor_settings.add(speed_text, 1, 0);
+			Label crash_factor = new Label("Crash factor: ");
+			factor_settings.add(crash_factor, 0, 1);
+			TextField crash_text = new TextField("0.1");
+			factor_settings.add(crash_text, 1, 1);
+			Label stop_factor = new Label("Stop factor: ");
+			factor_settings.add(stop_factor, 0, 2);
+			TextField stop_text = new TextField("0.1");
+			factor_settings.add(stop_text, 1, 2);
+			Button sb = new Button("Submit factors");
+			factor_settings.add(sb, 0, 3);
+
 			// The text input sections
 			GridPane grid = new GridPane();
 			grid.setAlignment(Pos.CENTER);
 			grid.setHgap(10);
 			grid.setVgap(10);
-			grid.setPadding(new Insets(25, 25, 50, 25));
+			grid.setPadding(new Insets(25, 25, 25, 25));
 			
-			Label Car_Type = new Label("Car type:");
-			grid.add(Car_Type, 0, 0);
-			ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("Car", "Truck", "Bus"));
-			cb.setVisible(true);
-			grid.add(cb, 1, 0);
+
 			
 //			The car type only shows up when the car toggle button is selected
 			tb1.setOnAction((new EventHandler<ActionEvent>() {
@@ -258,17 +284,22 @@ public class Configuration_2 extends Application{
 			rb2.setToggleGroup(group2);
 
 			HBox gender_button = new HBox(rb1, rb2);
-			grid.add(gender_button, 1, 2);
-			
-			//save and input buttons 
-			Button save_button = new Button("Save");
 			Button add_button = new Button("Add");
+			grid.add(gender_button, 1, 2);
+			grid.add(add_button, 0, 3);
+
+			//save and input buttons
+			Label density = new Label("Density: ");
+			TextField density_text = new TextField("6");
+			HBox density_box = new HBox(density, density_text);
+
+			Button save_button = new Button("Save");
 			Button simulate_button = new Button("Start simulate");
-			VBox save_add = new VBox(save_button, add_button, simulate_button);
+			VBox save_add = new VBox(density_box, save_button, simulate_button);
 			save_add.setSpacing(5);
 			save_add.setPadding(new Insets(25,25,25,25));
 			
-			VBox addBox = new VBox(hbox, grid, save_add);
+			VBox addBox = new VBox(hbox, car_type, factor_settings, grid, save_add);
 			addBox.setPadding(new Insets(15,15,15,15));
 		
 			
@@ -278,7 +309,7 @@ public class Configuration_2 extends Application{
 			//**********right side of UI*************
 			final TableView table = new TableView();
 			table.setEditable(true);
-	        table.setPrefSize(400, 400);
+	        table.setPrefSize(400, 580);
 	        
 	        TableColumn TrafficCol = new TableColumn("Traffic type");
 	        TrafficCol.setMinWidth(200);
@@ -292,7 +323,9 @@ public class Configuration_2 extends Application{
 	        AgeCol.setCellValueFactory(
 	        		new PropertyValueFactory<>("age"));
 	        table.setItems(data);
-	        
+
+
+	        // Button actionListener
 	        add_button.setOnAction((ActionEvent e)->{
 	        	String Gend=null;
 	        	Boolean is_Male = null;
@@ -357,42 +390,14 @@ public class Configuration_2 extends Application{
 	        	}
 	        });
 	        
-	        ArrayList<Traffic> list2 = new ArrayList<>();
+
 	        simulate_button.setOnAction(e->{
-	        int ii=table.getItems().size();
-	        	for(int ty=0;ty<ii;ty++) {
-	        		int age=Integer.parseInt(value(2,table,ty));
-	        		if((!value(0,table,ty).equals("Cyclist"))&&(!value(0,table,ty).equals("Walker"))) {
-	        			if(value(1,table,ty).equals("Male")) {
-	        				
-	        				list2.add(new Car(value(0,table,ty).substring(4),true,age));
-	        			}
-	        			else {
-	        				list2.add(new Car(value(0,table,ty).substring(4),false,age));
-	        			}
-	        		
-	        		}
-	        		else if(value(0,table,ty).equals("Walker")) {
-	        			if(value(1,table,ty).equals("Male")) {
-	        				list2.add(new Walker(true,age));
-	        			}
-	        			else {
-	        				list2.add(new Walker(false,age));
-	        			}
-	        		}
-	        		else {
-	        			if(value(1,table,ty).equals("Male")) {
-	        				list2.add(new Cyclist(true,age));
-	        			}
-	        			else {
-	        				list2.add(new Cyclist(false,age));
-	        			}
-	        		}
-	        	}
-				Simulation openn=new Simulation(list2);
+
+				Simulation openn=new Simulation(traffic_collection);
 
 				try
 				{
+					openn.setMax_involve_traffic(Integer.parseInt(density_text.getText()));
 					openn.start_simulate();
 					primaryStage.hide();
 					ArrayList<ArrayList<Record>> result = openn.getFullRecord();
