@@ -263,7 +263,6 @@ public class Configuration_2 extends Application{
 			//save and input buttons 
 			Button save_button = new Button("Save");
 			Button add_button = new Button("Add");
-
 			Button simulate_button = new Button("Start simulate");
 			VBox save_add = new VBox(save_button, add_button, simulate_button);
 			save_add.setSpacing(5);

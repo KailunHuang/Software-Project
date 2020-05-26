@@ -28,7 +28,11 @@ public class Random {
                     str.append(car_types[(int)(Math.random()*3)]+",");
                 }
                 str.append(gender[(int)(Math.random()*2)]+",");
-                str.append((int)(Math.random()*83+18)+"\n");
+                if(object.equals("Car")) {
+                    str.append((int) (Math.random() * 83 + 18) + "\n");
+                }else {
+                    str.append((int) (Math.random() * 101 ) + "\n");
+                }
                 fw.write(str.toString());
                 fw.flush();
             }
