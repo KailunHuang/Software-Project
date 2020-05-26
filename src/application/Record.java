@@ -87,7 +87,7 @@ public class Record {
         switch (this.action) {
             case "meet":
                 return (this.selftype + " " + this.selfname + " ,age:" + this.age1 + " ,gender:" + (this.is_male1 ? "male " : "female ")
-                        + this.action + " " + this.targettype + " " + this.targetname + " ,age:"+this.age1 + " ,gender:" + (this.is_male1 ? "male " : "female "));
+                        + this.action + " " + this.targettype + " " + this.targetname + " ,age:"+this.age2 + " ,gender:" + (this.is_male2 ? "male " : "female "));
             case "move":
                 return (this.selftype + " " + this.selfname + " " + "move to (" + posx + "," + posy + ")");
             case "appear":

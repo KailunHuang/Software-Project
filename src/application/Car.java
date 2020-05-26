@@ -8,7 +8,122 @@ public class Car extends Traffic {
     private static Random rnd = new Random();
     private String type;
     private ArrayList<Grid> intendPath;
+    private static double stop_factor_car_basic = 1.0;
+    private static double stop_factor_bus_basic = 1.1;
+    private static double stop_factor_truck_basic = 1.0;
+    private static double speed_factor_car_basic = 1.0;
+    private static double speed_factor_bus_basic = 0.85;
+    private static double speed_factor_truck_basic = 0.8;
+    private static double crash_factor_car_basic = 0.8;
+    private static double crash_factor_truck_basic = 1.0;
+    private static double crash_factor_bus_basic = 1.2;
+    private static double carelessRate_basic = 0.7;
+    private static double caution_changeByAge = 0.02;
+    private static double caution_genderDifference = 0.05;
 
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        Car.count = count;
+    }
+
+    public static double getStop_factor_car_basic() {
+        return stop_factor_car_basic;
+    }
+
+    public static void setStop_factor_car_basic(double stop_factor_car_basic) {
+        Car.stop_factor_car_basic = stop_factor_car_basic;
+    }
+
+    public static double getStop_factor_bus_basic() {
+        return stop_factor_bus_basic;
+    }
+
+    public static void setStop_factor_bus_basic(double stop_factor_bus_basic) {
+        Car.stop_factor_bus_basic = stop_factor_bus_basic;
+    }
+
+    public static double getStop_factor_truck_basic() {
+        return stop_factor_truck_basic;
+    }
+
+    public static void setStop_factor_truck_basic(double stop_factor_truck_basic) {
+        Car.stop_factor_truck_basic = stop_factor_truck_basic;
+    }
+
+    public static double getSpeed_factor_car_basic() {
+        return speed_factor_car_basic;
+    }
+
+    public static void setSpeed_factor_car_basic(double speed_factor_car_basic) {
+        Car.speed_factor_car_basic = speed_factor_car_basic;
+    }
+
+    public static double getSpeed_factor_bus_basic() {
+        return speed_factor_bus_basic;
+    }
+
+    public static void setSpeed_factor_bus_basic(double speed_factor_bus_basic) {
+        Car.speed_factor_bus_basic = speed_factor_bus_basic;
+    }
+
+    public static double getSpeed_factor_truck_basic() {
+        return speed_factor_truck_basic;
+    }
+
+    public static void setSpeed_factor_truck_basic(double speed_factor_truck_basic) {
+        Car.speed_factor_truck_basic = speed_factor_truck_basic;
+    }
+
+    public static double getCrash_factor_car_basic() {
+        return crash_factor_car_basic;
+    }
+
+    public static void setCrash_factor_car_basic(double crash_factor_car_basic) {
+        Car.crash_factor_car_basic = crash_factor_car_basic;
+    }
+
+    public static double getCrash_factor_truck_basic() {
+        return crash_factor_truck_basic;
+    }
+
+    public static void setCrash_factor_truck_basic(double crash_factor_truck_basic) {
+        Car.crash_factor_truck_basic = crash_factor_truck_basic;
+    }
+
+    public static double getCrash_factor_bus_basic() {
+        return crash_factor_bus_basic;
+    }
+
+    public static void setCrash_factor_bus_basic(double crash_factor_bus_basic) {
+        Car.crash_factor_bus_basic = crash_factor_bus_basic;
+    }
+
+    public static double getCarelessRate_basic() {
+        return carelessRate_basic;
+    }
+
+    public static void setCarelessRate_basic(double carelessRate_basic) {
+        Car.carelessRate_basic = carelessRate_basic;
+    }
+
+    public static double getCaution_changeByAge() {
+        return caution_changeByAge;
+    }
+
+    public static void setCaution_changeByAge(double caution_changeByAge) {
+        Car.caution_changeByAge = caution_changeByAge;
+    }
+
+    public static double getCaution_genderDifference() {
+        return caution_genderDifference;
+    }
+
+    public static void setCaution_genderDifference(double caution_genderDifference) {
+        Car.caution_genderDifference = caution_genderDifference;
+    }
 
     Car(String type, boolean gender, int age) {
         super(gender, age);
@@ -17,25 +132,26 @@ public class Car extends Traffic {
         this.V_type = "Car";
         this.type = type;
         if (type.equals("Truck")) {
-            this.speed_factor = 0.8;
-            this.crash_factor = 0.8;
-            this.stop_factor = 1.0;
+            this.speed_factor = speed_factor_truck_basic;
+            this.crash_factor = crash_factor_truck_basic;
+            this.stop_factor = stop_factor_truck_basic;
         } else if (type.equals("Bus")) {
-            this.stop_factor = 1.10;
-            this.speed_factor = 0.85;
-            this.crash_factor = 1.2;
+            this.stop_factor = stop_factor_bus_basic;
+            this.speed_factor = speed_factor_bus_basic;
+            this.crash_factor = crash_factor_bus_basic;
         } else {
-            this.speed_factor = 0.6;
-            this.crash_factor = 1.0;
+            this.speed_factor = speed_factor_car_basic;
+            this.crash_factor = crash_factor_car_basic;
+            this.stop_factor = stop_factor_car_basic;
         }
-        this.carelessRate = 0.7 - 0.02 * age;
-        this.crash_factor += 0.02 * age;
+        this.carelessRate = carelessRate_basic - caution_changeByAge * age;
+        this.crash_factor += caution_changeByAge * age;
         if (this.carelessRate < 0) {
             carelessRate = 0;
         }
         if (this.is_Male) {
-            carelessRate += 0.05;
-            this.stop_factor += 0.05;
+            carelessRate += caution_genderDifference;
+            this.stop_factor += caution_genderDifference;
         }
     }
 
