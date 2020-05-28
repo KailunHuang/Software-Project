@@ -1,5 +1,7 @@
 package application;
 
+import com.sun.org.apache.xml.internal.security.utils.JavaUtils;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -92,8 +94,14 @@ public class Simulation {
             crash_detection();
             deploy();
             exit_detection();
-            for (Traffic t : inGridTraffic) {
-                t.chooseAction();
+            ArrayList<Traffic> temp = new ArrayList<>(inGridTraffic.size());
+            for(Traffic t:inGridTraffic){
+                temp.add(t);
+            }
+            while(!temp.isEmpty()){
+                int rndcount = rnd.nextInt(temp.size());
+                temp.get(rndcount).chooseAction();
+                temp.remove(rndcount);
             }
             for (Traffic t : inGridTraffic) {
                 ArrayList<Record> records = t.checkIfMoveAble();
