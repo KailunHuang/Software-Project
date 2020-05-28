@@ -13,7 +13,10 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 public class WelcomePage3 extends Application {
 	public static void main(String[] args) {
@@ -23,16 +26,36 @@ public class WelcomePage3 extends Application {
 	public void start(Stage arg0) throws Exception {
 				
 		// TODO Auto-generated method stub
+		Label ll=new Label("Road Simulation");
+		Font font = new Font("times new roman", 43);
+		ll.setFont(font);
+		ll.setTranslateX(15);
+		ll.setTranslateY(-140);
+		
+		ll.setStyle("-fx-text-fill: #33FFFF");
+		
+		Label subject=new Label("COMP90082   Team 11");
+		Font font2 = new Font("times new roman", 25);
+		subject.setFont(font2);
+		subject.setTranslateX(200);
+		subject.setTranslateY(230);
+		//subject.setPrefWidth(100);
+		//subject.setPrefHeight(50);
+		subject.setStyle("-fx-text-fill: #33FFFF");
+		
 		Button newSimulation=new Button("New Simulation");
 		Button load=new Button("Load Simulation File");
+		
 		newSimulation.setTranslateX(10);
-		newSimulation.setTranslateY(-30);
+		newSimulation.setTranslateY(-20);
 		newSimulation.setPrefWidth(300);
 		newSimulation.setPrefHeight(50);
 		load.setTranslateX(10);
-    	load.setTranslateY(70);
+    	load.setTranslateY(90);
 		load.setPrefWidth(300);
 		load.setPrefHeight(50);
+		
+		
 		newSimulation.setOnAction(e->{
 			Configuration_2 open=new Configuration_2();
 			try
@@ -69,9 +92,13 @@ public class WelcomePage3 extends Application {
 		});
 		
 		StackPane page=new StackPane();
+		page.setStyle("-fx-background-color: #003A75");
+		page.getChildren().add(ll);
+		page.getChildren().add(subject);
 		page.getChildren().add(newSimulation);
 		page.getChildren().add(load);
-		Scene welpage=new Scene(page,500,400);
+		
+		Scene welpage=new Scene(page,700,500);
 		arg0.setScene(welpage);
 		arg0.show();
 	}

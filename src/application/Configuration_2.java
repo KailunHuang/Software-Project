@@ -558,10 +558,10 @@ public class Configuration_2 extends Application{
 						StaCrash.get(3)+"\n");
 						Text CrashGender=new Text("Gender distribution in the crashes is shown below: \n"+"male: "+
 								StaCrash.get(4)+"\n"+"Female: "+StaCrash.get(5)+"\n");
-						YieldAge=new Text("Age distribution in yield cases is shown below: \n"+" under 30 years old: "+
+						YieldAge=new Text("Age distribution of people who choose to yield is shown below: \n"+" under 30 years old: "+
 						StaYield.get(0)+"\n 30 to 45 years old: "+StaYield.get(1)+"\n 45 to 60 years old: "+StaYield.get(2)+"\n over 60 years old: "+
 						StaYield.get(3)+"\n");
-						Text YieldGender=new Text("Gender distribution in yield cases is shown below: \n"+"male: "+
+						Text YieldGender=new Text("Gender distribution of people who choose to yield is shown below: \n"+"male: "+
 								StaYield.get(4)+"\n"+"Female: "+StaYield.get(5));
 						roott.getChildren().add(crashAge);
 						roott.getChildren().add(CrashGender);
@@ -578,7 +578,7 @@ public class Configuration_2 extends Application{
 						
 						roott.getChildren().add(total_clash);
 						
-						Scene scenee = new Scene(roott,600,600);
+						Scene scenee = new Scene(roott,650,800);
 						primaryStage.setScene(scenee);
 						primaryStage.show();
 						 
