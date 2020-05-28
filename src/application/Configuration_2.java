@@ -1,12 +1,7 @@
 package application;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 import java.util.Random;
 
 import javax.swing.JFileChooser;
@@ -22,18 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -182,7 +166,7 @@ public class Configuration_2 extends Application{
 		try {
 
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,850,600);
+			Scene scene = new Scene(root,880,650);
 			
 			//**********left side of UI*************
 			
@@ -221,16 +205,32 @@ public class Configuration_2 extends Application{
 
 			Label speed_factor = new Label("Speed factor: ");
 			factor_settings.add(speed_factor, 0,0);
-			TextField speed_text = new TextField("0.1");
+			ScrollBar speed_text = new ScrollBar();
+			speed_text.setMin(0.5);
+			speed_text.setMax(2);
+			speed_text.setValue(0.5);
 			factor_settings.add(speed_text, 1, 0);
+			Label speed_value = new Label(String.valueOf(speed_text.getValue()));
+			factor_settings.add(speed_value, 2, 0);
 			Label crash_factor = new Label("Crash factor: ");
 			factor_settings.add(crash_factor, 0, 1);
-			TextField crash_text = new TextField("0.1");
+			ScrollBar crash_text = new ScrollBar();
+			crash_text.setMin(0.5);
+			crash_text.setMax(2);
+			crash_text.setValue(0.5);
 			factor_settings.add(crash_text, 1, 1);
+			Label crash_value = new Label(String.valueOf(crash_text.getValue()));
+			factor_settings.add(crash_value, 2, 1);
 			Label stop_factor = new Label("Stop factor: ");
 			factor_settings.add(stop_factor, 0, 2);
-			TextField stop_text = new TextField("0.1");
+			ScrollBar stop_text = new ScrollBar();
+			stop_text.setMin(0.1);
+			stop_text.setMax(1.5);
+			stop_text.setValue(0.1);
 			factor_settings.add(stop_text, 1, 2);
+			Label stop_value = new Label(String.valueOf(stop_text.getValue()));
+			factor_settings.add(stop_value, 2, 2);
+
 			Button submit = new Button("Submit factors");
 			factor_settings.add(submit, 0, 3);
 
@@ -259,9 +259,9 @@ public class Configuration_2 extends Application{
 					cb.setVisible(false);
 					Car_Type.setVisible(false);
 					System.out.println(factor_map);
-					speed_text.setText(factor_map.get("Walker").get("speed-factor").toString());
-					stop_text.setText(factor_map.get("Walker").get("stop-factor").toString());
-					crash_text.setText(factor_map.get("Walker").get("crash-factor").toString());
+					speed_text.setValue(factor_map.get("Walker").get("speed-factor"));
+					stop_text.setValue(factor_map.get("Walker").get("stop-factor"));
+					crash_text.setValue(factor_map.get("Walker").get("crash-factor"));
 				}
 			}));
 			tb3.setOnAction((new EventHandler<ActionEvent>() {
@@ -270,9 +270,9 @@ public class Configuration_2 extends Application{
 					// TODO Auto-generated method stub
 					cb.setVisible(false);
 					Car_Type.setVisible(false);
-					speed_text.setText(factor_map.get("Cyclist").get("speed-factor").toString());
-					stop_text.setText(factor_map.get("Cyclist").get("stop-factor").toString());
-					crash_text.setText(factor_map.get("Cyclist").get("crash-factor").toString());
+					speed_text.setValue(factor_map.get("Cyclist").get("speed-factor"));
+					stop_text.setValue(factor_map.get("Cyclist").get("stop-factor"));
+					crash_text.setValue(factor_map.get("Cyclist").get("crash-factor"));
 				}
 			}));
 
@@ -281,46 +281,73 @@ public class Configuration_2 extends Application{
 				public void handle(ActionEvent event) {
 					if (tb1.isSelected()){
 						if (cb.getValue().equals("Car")){
-							factor_map.get("Car").put("speed-factor",Double.parseDouble(speed_text.getText()));
-							factor_map.get("Car").put("crash-factor",Double.parseDouble(crash_text.getText()));
-							factor_map.get("Car").put("stop-factor",Double.parseDouble(stop_text.getText()));
+							factor_map.get("Car").put("speed-factor",speed_text.getValue());
+							factor_map.get("Car").put("crash-factor",crash_text.getValue());
+							factor_map.get("Car").put("stop-factor",stop_text.getValue());
+							Car.setCrash_factor_car_basic(factor_map.get("Car").get("crash-factor"));
+							Car.setSpeed_factor_car_basic(factor_map.get("Car").get("speed-factor"));
+							Car.setStop_factor_car_basic(factor_map.get("Car").get("stop-factor"));
 						}else if(cb.getValue().equals("Bus")){
-							factor_map.get("Bus").put("speed-factor",Double.parseDouble(speed_text.getText()));
-							factor_map.get("Bus").put("crash-factor",Double.parseDouble(crash_text.getText()));
-							factor_map.get("Bus").put("stop-factor",Double.parseDouble(stop_text.getText()));
+							factor_map.get("Bus").put("speed-factor",speed_text.getValue());
+							factor_map.get("Bus").put("crash-factor",crash_text.getValue());
+							factor_map.get("Bus").put("stop-factor",stop_text.getValue());
+							Car.setCrash_factor_bus_basic(factor_map.get("Bus").get("crash-factor"));
+							Car.setSpeed_factor_bus_basic(factor_map.get("Bus").get("speed-factor"));
+							Car.setStop_factor_bus_basic(factor_map.get("Bus").get("stop-factor"));
 						}else if(cb.getValue().equals("Truck")){
-							factor_map.get("Truck").put("speed-factor",Double.parseDouble(speed_text.getText()));
-							factor_map.get("Truck").put("crash-factor",Double.parseDouble(crash_text.getText()));
-							factor_map.get("Truck").put("stop-factor",Double.parseDouble(stop_text.getText()));
+							factor_map.get("Truck").put("speed-factor",speed_text.getValue());
+							factor_map.get("Truck").put("crash-factor",crash_text.getValue());
+							factor_map.get("Truck").put("stop-factor",stop_text.getValue());
+							Car.setCrash_factor_truck_basic(factor_map.get("Truck").get("crash-factor"));
+							Car.setSpeed_factor_truck_basic(factor_map.get("Truck").get("speed-factor"));
+							Car.setStop_factor_truck_basic(factor_map.get("Truck").get("stop-factor"));
 						}
 					}else if(tb2.isSelected()){
-						factor_map.get("Walker").put("speed-factor",Double.parseDouble(speed_text.getText()));
-						factor_map.get("Walker").put("crash-factor",Double.parseDouble(crash_text.getText()));
-						factor_map.get("Walker").put("stop-factor",Double.parseDouble(stop_text.getText()));
+						factor_map.get("Walker").put("speed-factor",speed_text.getValue());
+						factor_map.get("Walker").put("crash-factor",crash_text.getValue());
+						factor_map.get("Walker").put("stop-factor",stop_text.getValue());
+						Walker.setCrash_factor_basic(factor_map.get("Walker").get("crash-factor"));
+						Walker.setSpeed_factor_basic(factor_map.get("Walker").get("speed-factor"));
+						Walker.setStop_factor_basic(factor_map.get("Walker").get("stop-factor"));
 					}else if(tb3.isSelected()){
-						factor_map.get("Cyclist").put("speed-factor",Double.parseDouble(speed_text.getText()));
-						factor_map.get("Cyclist").put("crash-factor",Double.parseDouble(crash_text.getText()));
-						factor_map.get("Cyclist").put("stop-factor",Double.parseDouble(stop_text.getText()));
+						factor_map.get("Cyclist").put("speed-factor",speed_text.getValue());
+						factor_map.get("Cyclist").put("crash-factor",crash_text.getValue());
+						factor_map.get("Cyclist").put("stop-factor",stop_text.getValue());
+						Cyclist.setCrash_factor_basic(factor_map.get("Cyclist").get("crash-factor"));
+						Cyclist.setSpeed_factor_basic(factor_map.get("Cyclist").get("speed-factor"));
+						Cyclist.setStop_factor_basic(factor_map.get("Cyclist").get("stop-factor"));
 					}
 				}
 			}));
 
 			cb.getSelectionModel().selectedItemProperty().addListener((v, oldValues, newValue) -> {
 				if (newValue.equals("Car")){
-					speed_text.setText(factor_map.get("Car").get("speed-factor").toString());
-					stop_text.setText(factor_map.get("Car").get("stop-factor").toString());
-					crash_text.setText(factor_map.get("Car").get("crash-factor").toString());
+					speed_text.setValue(factor_map.get("Car").get("speed-factor"));
+					stop_text.setValue(factor_map.get("Car").get("stop-factor"));
+					crash_text.setValue(factor_map.get("Car").get("crash-factor"));
 				}else if(newValue.equals("Bus")){
-					speed_text.setText(factor_map.get("Bus").get("speed-factor").toString());
-					stop_text.setText(factor_map.get("Bus").get("stop-factor").toString());
-					crash_text.setText(factor_map.get("Bus").get("crash-factor").toString());
+					speed_text.setValue(factor_map.get("Bus").get("speed-factor"));
+					stop_text.setValue(factor_map.get("Bus").get("stop-factor"));
+					crash_text.setValue(factor_map.get("Bus").get("crash-factor"));
 				}else if(newValue.equals("Truck")){
-					speed_text.setText(factor_map.get("Truck").get("speed-factor").toString());
-					stop_text.setText(factor_map.get("Truck").get("stop-factor").toString());
-					crash_text.setText(factor_map.get("Truck").get("crash-factor").toString());
+					speed_text.setValue(factor_map.get("Truck").get("speed-factor"));
+					stop_text.setValue(factor_map.get("Truck").get("stop-factor"));
+					crash_text.setValue(factor_map.get("Truck").get("crash-factor"));
 				}
 			});
-			
+
+			speed_text.valueProperty().addListener((v, oldValues, newValue) -> {
+				speed_value.setText(String.valueOf(Math.round(newValue.doubleValue()*100)));
+			});
+
+			crash_text.valueProperty().addListener((v, oldValues, newValue) -> {
+				crash_value.setText(String.valueOf(Math.round(newValue.doubleValue()*100)));
+			});
+
+			stop_text.valueProperty().addListener((v, oldValues, newValue) -> {
+				stop_value.setText(String.valueOf(Math.round(newValue.doubleValue()*100)));
+			});
+
 			Label Age = new Label("Age:");
 			grid.add(Age, 0, 1);
 			TextField AgeTextField = new TextField();
@@ -344,10 +371,19 @@ public class Configuration_2 extends Application{
 			grid.add(gender_button, 1, 2);
 			grid.add(add_button, 0, 3);
 
+
 			//save and input buttons
 			Label density = new Label("Density: ");
+			density.setAlignment(Pos.CENTER);
 			TextField density_text = new TextField("6");
 			HBox density_box = new HBox(density, density_text);
+
+			Button random_button = new Button("Random Simulate");
+			random_button.setAlignment(Pos.CENTER);
+			TextField random_text = new TextField("100");
+			HBox random_config = new HBox(random_button, random_text);
+			random_config.setAlignment(Pos.CENTER);
+			random_config.setPadding(new Insets(0, 0, 15, 0));
 
 			Button save_button = new Button("Save");
 			Button simulate_button = new Button("Start simulate");
@@ -355,7 +391,7 @@ public class Configuration_2 extends Application{
 			save_add.setSpacing(5);
 			save_add.setPadding(new Insets(25,25,25,25));
 			
-			VBox addBox = new VBox(hbox, car_type, factor_settings, grid, save_add);
+			VBox addBox = new VBox(random_config, hbox, car_type, factor_settings, grid, save_add);
 			addBox.setPadding(new Insets(15,15,15,15));
 		
 			
@@ -365,7 +401,7 @@ public class Configuration_2 extends Application{
 			//**********right side of UI*************
 			final TableView table = new TableView();
 			table.setEditable(true);
-	        table.setPrefSize(400, 580);
+	        table.setPrefSize(400, 630);
 	        
 	        TableColumn TrafficCol = new TableColumn("Traffic type");
 	        TrafficCol.setMinWidth(200);
@@ -418,6 +454,7 @@ public class Configuration_2 extends Application{
 					if (tb1.isSelected()) {
 						Vehicle = "Car"+","+cb.getValue();
 						traffic = new Car((String)cb.getValue(), is_Male, Integer.parseInt(AgeTextField.getText()));
+
 					}else if(tb2.isSelected()) {
 						Vehicle = "Walker";
 						traffic = new Walker(is_Male, Integer.parseInt(AgeTextField.getText()));
@@ -667,7 +704,20 @@ public class Configuration_2 extends Application{
 
 			});
 	        
-	        
+	        random_button.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					int object_number = Integer.parseInt(random_text.getText());
+					System.out.println(object_number);
+					Random_config random = new Random_config(object_number);
+					random.simulate();
+					try {
+						readFile();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			});
 	        
 	        table.getColumns().addAll(TrafficCol, GenderCol, AgeCol);
 	        
@@ -701,6 +751,56 @@ public class Configuration_2 extends Application{
 		current_factors.put("crash-factor", 0.1);
 		current_factors.put("stop-factor", 0.1);
 		return current_factors;
+	}
+
+	public void readFile() throws FileNotFoundException {
+		File file = new File("Random.txt");
+		ArrayList<Traffic> collections_ = new ArrayList<Traffic>();
+		Boolean is_Male = null;
+		Scanner myReader = new Scanner(file);
+		while (myReader.hasNextLine()) {
+			String[] data = myReader.nextLine().split(",");
+			if (data.length > 3) {
+				if(data[2].equals("Male")) {
+					is_Male = true;
+				}else {
+					is_Male = false;
+				}
+				collections_.add(new Car(data[1],is_Male,Integer.parseInt(data[3])));
+//	        otherwise it's a walker or cyclist object
+			}else {
+				if(data[1].equals("Male")){
+					is_Male = true;
+				}else {
+					is_Male = false;
+				}
+				if(data[0].equals("Walker")) {
+					collections_.add(new Walker(is_Male, Integer.parseInt(data[2])));
+				}else {
+					System.out.println(data[0]);
+					collections_.add(new Cyclist(is_Male, Integer.parseInt(data[2])));
+				}
+			}
+		}
+
+		this.traffic_collection = collections_;
+		String gender = null;
+		for (int i = 0; i < this.traffic_collection.size(); i++) {
+			Traffic object = traffic_collection.get(i);
+
+			if(object.is_Male) {
+				gender = "Male";
+			}else {
+				gender = "Female";
+			}
+
+			if (object.V_type=="Car") {
+				data.add(new Information("Car"+","+((Car) object).getType(), Integer.toString(object.age), gender));
+			}else {
+				data.add(new Information(object.V_type, Integer.toString(object.age),gender));
+			}
+		}
+
 	}
 
 	public static void main(String[] args) {

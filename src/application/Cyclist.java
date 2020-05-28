@@ -63,6 +63,7 @@ public class Cyclist extends Traffic {
         return caution_genderDifference;
     }
 
+
     public static void setStop_factor_basic(double stop_factor_basic) {
         Cyclist.stop_factor_basic = stop_factor_basic;
     }
@@ -123,6 +124,7 @@ public class Cyclist extends Traffic {
         this.selectDirection();
         super.chooseAction();
     }
+
 
     public String getType() {
         return V_type;

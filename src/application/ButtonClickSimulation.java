@@ -253,7 +253,7 @@ public class ButtonClickSimulation extends Application{
 					String traffic_id = record.selftype+record.selfname;
 					current_records.put(traffic_id, imageView);
 				}else if(record.selftype.equals("Bus")) {
-					Image image = new Image(new FileInputStream("src/application/img/truck.png"));
+					Image image = new Image(new FileInputStream("src/application/img/bus.png"));
 					ImageView imageView = new ImageView(image); 
 					imageView.setLayoutX(x-30);
 					imageView.setLayoutY(y-30);

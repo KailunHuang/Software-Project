@@ -6,15 +6,11 @@ import java.io.IOException;
 import java.util.Scanner;
 
 
-public class Random {
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Input the number of objects：");
-        int count = Integer.parseInt(sc.nextLine());
-        Random generate = new Random(count);
-    }
-    //count: the number of object that you want to generate
-    public Random(int count) {
+class Random_config {
+
+    private int count;
+
+    public void simulate(){
         try {
             String[] object_types = {"Car","Walker","Cyclist"};
             String[] car_types = {"Car","Bus","Truck"};
@@ -40,5 +36,9 @@ public class Random {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Random_config(int count) {
+        this.count = count;
     }
 }
