@@ -5,12 +5,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import javax.swing.JFileChooser;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,10 +38,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+
 public class Configuration_2 extends Application{
-	
+
+	public HashMap<String, HashMap<String, Double>> factor_map = new HashMap<>();
 	ObservableList<Information> data=FXCollections.observableArrayList();
 	ArrayList<String> saveVehicle=new ArrayList<String>();
 	ArrayList<String> saveAge=new ArrayList<String>();
@@ -63,7 +68,7 @@ public class Configuration_2 extends Application{
 	static double maleyield=0;
 	static double femaleyield=0;
 	public Configuration_2() {
-		
+		initialFactors();
 	}
 	
 	public static void sumAgeOfCrash(int age) {
@@ -134,6 +139,7 @@ public class Configuration_2 extends Application{
 	
 	
 	public Configuration_2(ArrayList<Traffic> traffic) {
+		initialFactors();
 		this.traffic_collection = traffic;
 		String gender = null;
 		for (int i = 0; i < this.traffic_collection.size(); i++) {
@@ -156,9 +162,9 @@ public class Configuration_2 extends Application{
 
 	public static String value(int k, TableView t, int m) {
 		TableColumn Column = (TableColumn) t.getColumns().get(k);
- 	   ObservableValue observeValue = Column.getCellObservableValue(m);
- 	   String a=observeValue.getValue().toString();
- 	   return a;
+ 	   	ObservableValue observeValue = Column.getCellObservableValue(m);
+ 	   	String a=observeValue.getValue().toString();
+ 	   	return a;
 	}
 	
 	
@@ -186,8 +192,7 @@ public class Configuration_2 extends Application{
 			ToggleButton tb1 = new ToggleButton("Car");
 			tb1.setToggleGroup(group);
 			tb1.setSelected(true);
-			
-			
+
 			ToggleButton tb2 = new ToggleButton("Foot passger");
 			tb2.setToggleGroup(group);
 			
@@ -226,8 +231,8 @@ public class Configuration_2 extends Application{
 			factor_settings.add(stop_factor, 0, 2);
 			TextField stop_text = new TextField("0.1");
 			factor_settings.add(stop_text, 1, 2);
-			Button sb = new Button("Submit factors");
-			factor_settings.add(sb, 0, 3);
+			Button submit = new Button("Submit factors");
+			factor_settings.add(submit, 0, 3);
 
 			// The text input sections
 			GridPane grid = new GridPane();
@@ -253,6 +258,10 @@ public class Configuration_2 extends Application{
 					// TODO Auto-generated method stub
 					cb.setVisible(false);
 					Car_Type.setVisible(false);
+					System.out.println(factor_map);
+					speed_text.setText(factor_map.get("Walker").get("speed-factor").toString());
+					stop_text.setText(factor_map.get("Walker").get("stop-factor").toString());
+					crash_text.setText(factor_map.get("Walker").get("crash-factor").toString());
 				}
 			}));
 			tb3.setOnAction((new EventHandler<ActionEvent>() {
@@ -261,9 +270,56 @@ public class Configuration_2 extends Application{
 					// TODO Auto-generated method stub
 					cb.setVisible(false);
 					Car_Type.setVisible(false);
+					speed_text.setText(factor_map.get("Cyclist").get("speed-factor").toString());
+					stop_text.setText(factor_map.get("Cyclist").get("stop-factor").toString());
+					crash_text.setText(factor_map.get("Cyclist").get("crash-factor").toString());
 				}
 			}));
-			
+
+			submit.setOnAction((new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					if (tb1.isSelected()){
+						if (cb.getValue().equals("Car")){
+							factor_map.get("Car").put("speed-factor",Double.parseDouble(speed_text.getText()));
+							factor_map.get("Car").put("crash-factor",Double.parseDouble(crash_text.getText()));
+							factor_map.get("Car").put("stop-factor",Double.parseDouble(stop_text.getText()));
+						}else if(cb.getValue().equals("Bus")){
+							factor_map.get("Bus").put("speed-factor",Double.parseDouble(speed_text.getText()));
+							factor_map.get("Bus").put("crash-factor",Double.parseDouble(crash_text.getText()));
+							factor_map.get("Bus").put("stop-factor",Double.parseDouble(stop_text.getText()));
+						}else if(cb.getValue().equals("Truck")){
+							factor_map.get("Truck").put("speed-factor",Double.parseDouble(speed_text.getText()));
+							factor_map.get("Truck").put("crash-factor",Double.parseDouble(crash_text.getText()));
+							factor_map.get("Truck").put("stop-factor",Double.parseDouble(stop_text.getText()));
+						}
+					}else if(tb2.isSelected()){
+						factor_map.get("Walker").put("speed-factor",Double.parseDouble(speed_text.getText()));
+						factor_map.get("Walker").put("crash-factor",Double.parseDouble(crash_text.getText()));
+						factor_map.get("Walker").put("stop-factor",Double.parseDouble(stop_text.getText()));
+					}else if(tb3.isSelected()){
+						factor_map.get("Cyclist").put("speed-factor",Double.parseDouble(speed_text.getText()));
+						factor_map.get("Cyclist").put("crash-factor",Double.parseDouble(crash_text.getText()));
+						factor_map.get("Cyclist").put("stop-factor",Double.parseDouble(stop_text.getText()));
+					}
+				}
+			}));
+
+			cb.getSelectionModel().selectedItemProperty().addListener((v, oldValues, newValue) -> {
+				if (newValue.equals("Car")){
+					speed_text.setText(factor_map.get("Car").get("speed-factor").toString());
+					stop_text.setText(factor_map.get("Car").get("stop-factor").toString());
+					crash_text.setText(factor_map.get("Car").get("crash-factor").toString());
+				}else if(newValue.equals("Bus")){
+					speed_text.setText(factor_map.get("Bus").get("speed-factor").toString());
+					stop_text.setText(factor_map.get("Bus").get("stop-factor").toString());
+					crash_text.setText(factor_map.get("Bus").get("crash-factor").toString());
+				}else if(newValue.equals("Truck")){
+					speed_text.setText(factor_map.get("Truck").get("speed-factor").toString());
+					stop_text.setText(factor_map.get("Truck").get("stop-factor").toString());
+					crash_text.setText(factor_map.get("Truck").get("crash-factor").toString());
+				}
+			});
 			
 			Label Age = new Label("Age:");
 			grid.add(Age, 0, 1);
@@ -331,32 +387,52 @@ public class Configuration_2 extends Application{
 	        	Boolean is_Male = null;
 	        	String Vehicle = null;
 	        	Traffic traffic = null;
-	        	
-	        	if(rb1.isSelected()) {
-	        		Gend="Male";
-	        		is_Male = true;
-	        	}
-	        	else {
-	        		Gend="Female";
-	        		is_Male = false;
-	        	}
-	        	
-	        	if (tb1.isSelected()) {
-	        		Vehicle = "Car"+","+cb.getValue();
-	        		traffic = new Car((String)cb.getValue(), is_Male, Integer.parseInt(AgeTextField.getText()));
-	        	}else if(tb2.isSelected()) {
-	        		Vehicle = "Walker";
-	        		traffic = new Walker(is_Male, Integer.parseInt(AgeTextField.getText()));
-	        	}else {
-	        		Vehicle="Cyclist";
-	        		traffic = new Cyclist(is_Male, Integer.parseInt(AgeTextField.getText()));
-	        	}
-	        	
-	        	data.add(new Information(
-	        			Vehicle,
-	        			AgeTextField.getText(),
-	        			Gend));
-	        	traffic_collection.add(traffic);
+
+				int age = Integer.parseInt(AgeTextField.getText());
+				if (tb1.isSelected() && (age < 18 || age > 100)){
+					Popup_window popup = new Popup_window("Car");
+					try {
+						popup.start();
+					} catch (Exception exception) {
+						exception.printStackTrace();
+					}
+				}else if(tb2.isSelected() || tb3.isSelected()){
+					if (age < 8 || age > 100){
+						Popup_window popup = new Popup_window("Other");
+						try {
+							popup.start();
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+				}else{
+					if(rb1.isSelected()) {
+						Gend="Male";
+						is_Male = true;
+					}
+					else {
+						Gend="Female";
+						is_Male = false;
+					}
+
+					if (tb1.isSelected()) {
+						Vehicle = "Car"+","+cb.getValue();
+						traffic = new Car((String)cb.getValue(), is_Male, Integer.parseInt(AgeTextField.getText()));
+					}else if(tb2.isSelected()) {
+						Vehicle = "Walker";
+						traffic = new Walker(is_Male, Integer.parseInt(AgeTextField.getText()));
+					}else {
+						Vehicle="Cyclist";
+						traffic = new Cyclist(is_Male, Integer.parseInt(AgeTextField.getText()));
+					}
+
+					data.add(new Information(
+							Vehicle,
+							AgeTextField.getText(),
+							Gend));
+					traffic_collection.add(traffic);
+				}
+
 	        });
 	  
 	        save_button.setOnAction((ActionEvent e)->{
@@ -609,9 +685,24 @@ public class Configuration_2 extends Application{
 			e.printStackTrace();
 		}
 	}
-	
 
-	
+
+	public void initialFactors(){
+		factor_map.put("Car", initialFactor());
+		factor_map.put("Bus", initialFactor());
+		factor_map.put("Truck", initialFactor());
+		factor_map.put("Walker", initialFactor());
+		factor_map.put("Cyclist", initialFactor());
+	}
+
+	public HashMap<String, Double> initialFactor(){
+		HashMap<String, Double> current_factors = new HashMap<>();
+		current_factors.put("speed-factor", 0.1);
+		current_factors.put("crash-factor", 0.1);
+		current_factors.put("stop-factor", 0.1);
+		return current_factors;
+	}
+
 	public static void main(String[] args) {
 		launch(args);
 	}
