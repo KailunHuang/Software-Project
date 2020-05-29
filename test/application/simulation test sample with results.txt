@@ -1,0 +1,126 @@
+Cyclist,Male,55
+Walker,Male,83
+Cyclist,Female,78
+Car,Truck,Male,58
+Cyclist,Female,91
+Cyclist,Male,23
+Walker,Female,56
+Walker,Male,45
+Walker,Male,62
+Cyclist,Female,41
+Cyclist,Male,25
+Walker,Male,63
+Walker,Male,86
+Cyclist,Male,79
+Car,Bus,Male,29
+Cyclist,Female,92
+Car,Truck,Male,84
+Cyclist,Male,67
+Walker,Female,30
+Cyclist,Male,97
+Walker,Female,91
+Walker,Female,89
+Walker,Male,33
+Car,Bus,Male,31
+Walker,Male,76
+Walker,Male,77
+Walker,Male,41
+Car,Truck,Female,85
+Car,Car,Male,63
+Cyclist,Male,86
+Car,Bus,Male,79
+Cyclist,Male,76
+Car,Car,Female,52
+Cyclist,Male,80
+Car,Truck,Male,61
+Cyclist,Female,20
+Walker,Male,70
+Car,Bus,Male,100
+Car,Car,Male,93
+Walker,Female,32
+Car,Truck,Female,85
+Cyclist,Male,72
+Cyclist,Male,85
+Car,Car,Female,35
+Cyclist,Male,63
+Cyclist,Female,95
+Cyclist,Female,51
+Cyclist,Male,88
+Walker,Male,75
+Walker,Female,61
+Car,Bus,Female,30
+Car,Truck,Male,37
+Walker,Female,88
+Car,Bus,Male,23
+Walker,Female,53
+Car,Truck,Male,44
+Car,Truck,Male,94
+Cyclist,Male,38
+Walker,Male,27
+Walker,Female,48
+Walker,Female,48
+Cyclist,Female,41
+Cyclist,Male,61
+Cyclist,Female,84
+Walker,Male,49
+Cyclist,Male,41
+Car,Truck,Female,61
+Car,Car,Female,78
+Cyclist,Male,72
+Walker,Male,36
+Car,Bus,Female,97
+Cyclist,Male,29
+Car,Truck,Female,73
+Car,Bus,Male,34
+Car,Truck,Female,86
+Walker,Female,62
+Walker,Female,73
+Cyclist,Female,83
+Cyclist,Female,69
+Walker,Male,29
+Car,Truck,Male,83
+Car,Car,Male,95
+Cyclist,Male,56
+Car,Truck,Male,54
+Car,Car,Female,21
+Car,Truck,Female,34
+Walker,Female,78
+Walker,Male,89
+Cyclist,Male,57
+Cyclist,Male,33
+Walker,Female,61
+Walker,Female,28
+Walker,Male,89
+Cyclist,Male,37
+Car,Car,Male,66
+Car,Truck,Male,54
+Car,Bus,Male,65
+Cyclist,Male,28
+Walker,Male,86
+Cyclist,Female,70
+
+*********Above is used in random generalisation*********
+
+
+*********Summary result of this simulation*********
+Age distribution in the crashes:
+	under 30 years old: 35.23%
+	30 to 45 years old: 16.42%
+	45 to 60 years old: 15.82%
+	over60 years old: 32.53%
+
+Gender distribution:
+	male: 54.40%
+	female: 45.60%
+
+Age distribution of people who choose to yield is:
+	under 30 years old: 21.03%
+	30 to 45 years old: 10.92%
+	45 to 60 years old: 13.37%
+	over60 years old: 65.6%
+
+Gender distribution of people who choose to yield is:
+	male: 33.95%
+	female: 66.05%
+
+Total number of crashes: 45
