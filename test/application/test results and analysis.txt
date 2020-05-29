@@ -1,0 +1,38 @@
+#################Simulation setting#################
+number of objects: 1000
+Density: 16
+All factors values are by default.
+####################################################
+
+
+#################Simulation result##################
+Age distribution in the crashes:
+ under 30 years old: 13.81%
+ 30 to 45 years old: 12.86%
+ 45 to 60 years old: 13.81%
+ over60 years old: 59.52%
+
+Gender distribution:
+ male: 33.81%
+ female: 66.19%
+
+Age distribution of people who choose to yield is:
+ under 30 years old: 4.28%
+ 30 to 45 years old: 11.76%
+ 45 to 60 years old: 13.37%
+ over60 years old: 70.59%
+
+Gender distribution of people who choose to yield is:
+ male: 25.13%
+ female: 74.87%
+
+Total number of crashes: 105
+####################################################
+
+
+##################Key findings######################
+1 Age distribution in the crashes is not as expected. This is due to the fact that the range is not divided equally.
+2 Age distribution and gender distribution of people who choose to yield are as expected.
+3 We might change the age range or mention this issue in the presentation.
+####################################################
+
