@@ -74,8 +74,7 @@ String object = object_types[(int(Math.random()*3)];
 In this page, you will find the animation for the simulation process. You can find if objects have crashes.
 
 ### Summary
-We aim to provide our client with a clear and concise result of the simulation and decisions made by each object.
-Thus, At the end of a simulation, we provide a brief report of it. Key information involve:
+At the end of a simulation, we provide a brief report of it. Key information involve:
 
 * Each decision made at each round, with action, outcome, and driver info.
 * Total number of crashes in the simulation.
