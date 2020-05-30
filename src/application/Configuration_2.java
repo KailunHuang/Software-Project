@@ -337,15 +337,15 @@ public class Configuration_2 extends Application{
 			});
 
 			speed_text.valueProperty().addListener((v, oldValues, newValue) -> {
-				speed_value.setText(String.valueOf(Math.round(newValue.doubleValue()*100)));
+				speed_value.setText(String.valueOf((double)Math.round(newValue.doubleValue()*100)/100));
 			});
 
 			crash_text.valueProperty().addListener((v, oldValues, newValue) -> {
-				crash_value.setText(String.valueOf(Math.round(newValue.doubleValue()*100)));
+				crash_value.setText(String.valueOf((double)Math.round(newValue.doubleValue()*100)/100));
 			});
 
 			stop_text.valueProperty().addListener((v, oldValues, newValue) -> {
-				stop_value.setText(String.valueOf(Math.round(newValue.doubleValue()*100)));
+				stop_value.setText(String.valueOf((double)Math.round(newValue.doubleValue()*100)/100));
 			});
 
 			Label Age = new Label("Age:");
