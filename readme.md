@@ -80,6 +80,9 @@ At the end of a simulation, we provide a brief report of it. Key information inv
 * Total number of crashes in the simulation.
 * Statistics on crashes happened in the simulation, including age distribution, gender distribution, people’s preference to make certain actions.
 
+## Sample test file and result
+Please find it in the ```test/application```, we have provide a sample 1000 test objects for your you as well as the simulation result.
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
