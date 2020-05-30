@@ -57,8 +57,18 @@ private static double carelessRate_basic = 0.7;
 private static double caution_changeByAge = 0.02;
 private static double caution_genderDifference = 0.05;
 ```
+Notice: Some paremeters cannot be changed in the frontend now, but all these API are provided already. In the future, you may include them in the configuration.
 
 You can also change the ```density``` level of the map, altering the maximum number of cars on the map.
+
+You might input object information by your own, or you can randomly generalize object information. Settings can be changed at ```random.java```
+
+At present, the age and object types are simply randomly generated. In the future, you may want to change it to a certain distribution.
+```                
+str.append((int)(Math.random()*83+18)+"\n");
+String object = object_types[(int(Math.random()*3)];
+```
+
 
 ### Animation
 In this page, you will find the animation for the simulation process. You can find if objects have crashes.
@@ -76,5 +86,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+
