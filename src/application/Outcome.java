@@ -1,3 +1,8 @@
+/***
+ * This file is created by Kailun Huang (828808)
+ * This file should shows up a series of statistics about the action and property of the traffics meet in a intersection.
+ */
+
 package application;
 
 import java.util.ArrayList;

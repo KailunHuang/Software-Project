@@ -1,4 +1,5 @@
 /***
+ * This file is created by Kailin Huang (828808).
  * This class is the animation page, after the user finish the configuration page, the traffic data will send to the
  * simulation part, and the output of simulation will be shown up as animation by this page.
  * In total, we have 4 intersection cross, 8 start point in the map.
@@ -77,7 +78,8 @@ public class ButtonClickSimulation extends Application{
 	    
 	    loadRoadImage(gameGrid);
 	    Button next = new Button("Next");
-	    
+
+	    //***********************Do the animation every 1 second*********************
 	    timeline = new Timeline();
 	    timeline.setCycleCount(Timeline.INDEFINITE);
 	    
@@ -109,7 +111,7 @@ public class ButtonClickSimulation extends Application{
         });
 	    timeline.getKeyFrames().add(keyFrame);
 	    timeline.playFromStart();
-	    
+	    //*************************************************************************************
 
 	    System.out.println("record size: "+records.size());
 	     
@@ -121,7 +123,8 @@ public class ButtonClickSimulation extends Application{
 	    primaryStage.setScene(scene);
         primaryStage.show();
 	}
-	
+
+	//************load the background images in the panel*******************************
 	public static void loadRoadImage(GridPane gridpane) {
 		int columns = 13;
 		int rows = 11;
@@ -171,7 +174,8 @@ public class ButtonClickSimulation extends Application{
 			}
 		}
 	}
-	
+
+	//Every time finish the animation, the position of the traffic images should be relocated.
 	public void ShowEachRoundPosition(GridPane gridpane) throws FileNotFoundException {
 		ArrayList<Record> record_array = records.get(round);
 		System.out.println("record array: "+record_array.size());
@@ -206,7 +210,8 @@ public class ButtonClickSimulation extends Application{
 			}
 		}
 	}
-	
+
+	//Do the animation for all the traffics in a round
 	public void ShowEachRoundAnimation(Group gridpane) throws FileNotFoundException {
 		System.out.println(round);
 		ArrayList<Record> round0 = records.get(round);
@@ -365,27 +370,7 @@ public class ButtonClickSimulation extends Application{
 			root.getChildren().remove(crashes.get(i));
 		}
 	}
-	
-//	private ArrayList<ArrayList<Record>> getRecords(ArrayList<Traffic> traffic_collection) {
-//		// TODO Auto-generated method stub
-//		System.out.println((traffic_collection==null)+" "+"Simulation page");
-//		Simulation openn=new Simulation(traffic_collection);
-//		ArrayList<ArrayList<Record>> result = new ArrayList<ArrayList<Record>>();
-//		try
-//		{
-//			openn.start_simulate();
-//			result = openn.getFullRecord();
-//		}
-//		catch(Exception e1) {
-//			e1.printStackTrace();
-//		}
-//		return result;
-//	}
-	
-//	private ArrayList<ArrayList<Record>> getRecords(){
-//		Testoutput t = new Testoutput();
-//		return t.fullrecords;
-//	}
+
 	
 	public static void main(String[] args) {
         Application.launch(args);
