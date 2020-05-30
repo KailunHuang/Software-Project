@@ -1,11 +1,20 @@
+/***
+ * This file is create by Kailun Huang (828808) and partly edited by Lintong Zhong.
+ * Configuration file is page help the user to build the configuration of traffic simulations.
+ * Two important goals:
+ * 1. The user can add the traffic with different traffic type, gender and driver/walker/cyclist's age
+ * 2. The user can change the traffics factors, like: speed, stop factors etc.
+ *
+ * This page should also lead to simulation page, click on the button "Start Simulation", Configuration should
+ * be hide and Simulation page should be shows up.
+ */
+
 package application;
 
 import java.io.*;
 import java.util.*;
 import java.util.Random;
-
 import javax.swing.JFileChooser;
-
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

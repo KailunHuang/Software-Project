@@ -1,3 +1,10 @@
+/***
+ * This class is the animation page, after the user finish the configuration page, the traffic data will send to the
+ * simulation part, and the output of simulation will be shown up as animation by this page.
+ * In total, we have 4 intersection cross, 8 start point in the map.
+ * The car types traffics will shows up in the start point randomly and start to move 1 cell each time until the reach
+ * the end, and then it will disappear in the map.
+ */
 package application;
 
 import javafx.event.ActionEvent;

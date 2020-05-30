@@ -1,3 +1,12 @@
+/***
+ * This file is created by Kailun Huang(828808) edited by Lintong Zhong.
+ * WelcomePage3 is the welcome board when the user open the application
+ * There should be 2 buttons on the board:
+ * 1. New Simulation: to create a simulation page after click the button
+ * 2. Load file: after clicking on this button, a file choose page will
+ * shows up, and the application would load the file which chooses to open
+ */
+
 package application;
 
 import java.io.File;
