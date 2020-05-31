@@ -396,7 +396,8 @@ public class Configuration_2 extends Application{
 
 			Button save_button = new Button("Save");
 			Button simulate_button = new Button("Start simulate");
-			VBox save_add = new VBox(density_box, save_button, simulate_button);
+			Button back_button = new Button("Back");
+			VBox save_add = new VBox(density_box, save_button, simulate_button, back_button);
 			save_add.setSpacing(5);
 			save_add.setPadding(new Insets(25,25,25,25));
 			
@@ -511,7 +512,16 @@ public class Configuration_2 extends Application{
 				}
 	        	}
 	        });
-	        
+
+	        back_button.setOnAction((ActionEvent e)->{
+	        	WelcomePage3 welcomePage3 = new WelcomePage3();
+				try {
+					welcomePage3.start(new Stage());
+					primaryStage.hide();
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
+			});
 
 	        simulate_button.setOnAction(e->{
 
@@ -793,6 +803,7 @@ public class Configuration_2 extends Application{
 		}
 
 		this.traffic_collection = collections_;
+		this.data.clear();
 		String gender = null;
 		for (int i = 0; i < this.traffic_collection.size(); i++) {
 			Traffic object = traffic_collection.get(i);

@@ -21,6 +21,7 @@ import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -125,7 +126,7 @@ public class ButtonClickSimulation extends Application{
 	}
 
 	//************load the background images in the panel*******************************
-	public static void loadRoadImage(GridPane gridpane) {
+	public static void loadRoadImage(GridPane gridpane) throws FileNotFoundException {
 		int columns = 13;
 		int rows = 11;
 		
@@ -173,6 +174,50 @@ public class ButtonClickSimulation extends Application{
 				gridpane.add(column.get(j).get(i), n, i);
 			}
 		}
+
+		Image crash_image = new Image(new FileInputStream("src/application/img/crash.png"));
+		Image car_image = new Image(new FileInputStream("src/application/img/car.png"));
+		Image walker_image = new Image(new FileInputStream("src/application/img/walker_right.png"));
+		Image truck_image = new Image(new FileInputStream("src/application/img/truck.png"));
+		Image bus_image = new Image(new FileInputStream("src/application/img/bus.png"));
+		Image bike_image = new Image(new FileInputStream("src/application/img/bike.png"));
+		ImageView crash_imageView = new ImageView(crash_image);
+		crash_imageView.setFitWidth(60);
+		crash_imageView.setFitHeight(60);
+		ImageView car_imageView = new ImageView(car_image);
+		car_imageView.setFitHeight(60);
+		car_imageView.setFitWidth(60);
+		ImageView walker_imageView = new ImageView(walker_image);
+		walker_imageView.setFitHeight(60);
+		walker_imageView.setFitWidth(60);
+		ImageView truck_imageView = new ImageView(truck_image);
+		truck_imageView.setFitWidth(60);
+		truck_imageView.setFitHeight(60);
+		ImageView bus_imageView = new ImageView(bus_image);
+		bus_imageView.setFitHeight(60);
+		bus_imageView.setFitWidth(60);
+		ImageView bike_imageView = new ImageView(bike_image);
+		bike_imageView.setFitWidth(60);
+		bike_imageView.setFitHeight(60);
+		Label car_label = new Label("Car");
+		Label crash_label = new Label("Crash");
+		Label walker_label = new Label("Pedestrian");
+		Label truck_label = new Label("Truck");
+		Label bus_label = new Label("Bus");
+		Label bike_label = new Label("Cyclist");
+		gridpane.add(car_imageView,9,0);
+		gridpane.add(car_label,10,0);
+		gridpane.add(bus_imageView,9, 1);
+		gridpane.add(bus_label,10,1);
+		gridpane.add(truck_imageView,9,2);
+		gridpane.add(truck_label,10,2);
+		gridpane.add(walker_imageView,9,10);
+		gridpane.add(walker_label,10,10);
+		gridpane.add(bike_imageView, 9,11);
+		gridpane.add(bike_label,10,11);
+		gridpane.add(crash_imageView,9,12);
+		gridpane.add(crash_label,10,12);
+
 	}
 
 	//Every time finish the animation, the position of the traffic images should be relocated.
