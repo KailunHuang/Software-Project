@@ -1,5 +1,5 @@
 /***
- * This file is create by Kailun Huang (828808) and partly edited by Lintong Zhong.
+ * This file is created by Kailun Huang (828808) and partly edited by Lintong Zhong.
  * Configuration file is page help the user to build the configuration of traffic simulations.
  * Two important goals:
  * 1. The user can add the traffic with different traffic type, gender and driver/walker/cyclist's age
@@ -8,7 +8,7 @@
  * This page should also lead to simulation page, click on the button "Start Simulation", Configuration should
  * be hide and Simulation page should be shows up.
  */
-
+//icon sources:https://www.flaticon.com/
 package application;
 
 import java.io.*;
@@ -63,7 +63,7 @@ public class Configuration_2 extends Application{
 	public Configuration_2() {
 		initialFactors();
 	}
-	
+	//calculate the number of each age interval in crashes
 	public static void sumAgeOfCrash(int age) {
 		if(age<30) {
 			under30++;
@@ -82,7 +82,7 @@ public class Configuration_2 extends Application{
 			
 		}
 	}
-	
+	//calculate the number of males and females in crashes
 	public static void sumGenderOfCrash(boolean gender) {
 		if(gender) {
 			malecrash++;
@@ -91,7 +91,7 @@ public class Configuration_2 extends Application{
 			femalecrash++;
 		}
 	}
-	
+	//calculate the number of males and females of people choosing to yield
 	public static void sumGenderOfYield(boolean gender) {
 		if(gender) {
 			maleyield++;
@@ -110,7 +110,7 @@ public class Configuration_2 extends Application{
 		double b=100*StatisticalAgeOfYield.get(a);
 		return String.format("%.2f", b)+"%";
 	}
-	
+	//calculate the number of people choosing to yield in each age interval 
 	public static void sumAgeOfYield(int age) {
 		if(age<30) {
 			Yunder30++;
@@ -659,6 +659,7 @@ public class Configuration_2 extends Application{
 						//	cell2.add(YieldAge, 0, 2);
 							//intersection.getItems().add(cell2);
 						}
+						//statistical results
 						StatisticalAge.add(under30*1.00/(total_clashes*2));
 						StatisticalAge.add(from30to45*1.00/(total_clashes*2));
 						StatisticalAge.add(from45to60*1.00/(total_clashes*2));
@@ -684,6 +685,7 @@ public class Configuration_2 extends Application{
 							StaYield.add(round2(i));
 						}
 						roott.getChildren().add(intersection);
+						//summary page
 						if((total_clashes!=0)&&(meetyield!=0)) {
 						crashAge=new Text("Age distribution in the crashes is shown below: \n"+" under 30 years old: "+
 						StaCrash.get(0)+"\n 30 to 45 years old: "+StaCrash.get(1)+"\n 45 to 60 years old: "+StaCrash.get(2)+"\n over 60 years old: "+
